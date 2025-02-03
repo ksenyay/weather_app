@@ -12,7 +12,9 @@ const currentCondition = document.querySelector("#condition");
 const feelsLike = document.querySelector("#feels_like");
 const weatherIcon = document.querySelector("#weather_icon");
 
-// END OF CURRENT WEATHER
+// HUMIDITY
+
+const humidityText = document.querySelector("#humidity_percentage");
 
 window.onload = function () {
   fetchWeather();
@@ -50,6 +52,7 @@ async function getCurrentWeather(location) {
     setCondition(responseData.current.condition.text);
     setFeelsLike(responseData.current.feelslike_c);
     setWeatherIcon(responseData.current.condition.icon);
+    updateFill(responseData.current.humidity);
   } catch (error) {
     console.error("Failed to fetch weather data:", error.message);
     alert("Please enter a valid value!");
@@ -75,4 +78,13 @@ function setFeelsLike(feelsTemp) {
 
 function setWeatherIcon(icon) {
   weatherIcon.src = icon;
+}
+
+function updateFill(humidity) {
+  let input = humidity;
+  humidityText.textContent = `${humidity}%`;
+  let circle = document.getElementById("fill-circle");
+  let maxDashOffset = 251.2; // Circumference of the circle (2 * π * r)
+  let newOffset = maxDashOffset - (input / 100) * maxDashOffset;
+  circle.style.strokeDashoffset = newOffset;
 }
