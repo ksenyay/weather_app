@@ -9,26 +9,28 @@
 <body>
     <div id="background">
         <form id="location_form">
-            <input type="text" id="location" name="location">
+            <input type="text" id="location" name="location" value="Lviv" autocomplete="off">
             <button type="submit">Select</button>
         </form>
-
         <div id="container">
             <div class="element" id="weekly_weather">
 
             </div>
             <div class="element" id="todays_weather">
                 <div id="location_text" >
-                    <p id="city">Lviv, </p>
-                    <p id="country">Ukraine</p>
+                    <p id="city"></p>
+                    <p id="country"></p>
                 </div>
                 <div id="current_temperature">
-                    <p id="temperature">30</p>
-                    <p id="celcius_sign">C</p>
+                    <p id="temperature"></p>
+                    <p id="celcius_sign"></p>
                 </div>
-               
-                <p id="condition">Cloudy</p>
-                <p id="feels_like">Feels like 18 °C</p>
+               <div id="current_condition">
+                <p id="condition"></p>
+                <img src="#" alt="weather_icon" id="weather_icon">
+               </div>
+
+                <p id="feels_like"></p>
             </div>
             <div class="element"></div>
             <div class="element"></div>

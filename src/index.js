@@ -10,15 +10,27 @@ const currentCountry = document.querySelector("#country");
 const currentTemperature = document.querySelector("#temperature");
 const currentCondition = document.querySelector("#condition");
 const feelsLike = document.querySelector("#feels_like");
+const weatherIcon = document.querySelector("#weather_icon");
 
 // END OF CURRENT WEATHER
 
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
+window.onload = function () {
+  fetchWeather();
+};
+
+function fetchWeather() {
   const location = input.value.trim();
+
   if (!location) {
     alert("The field cannot be empty!");
   }
+  getCurrentWeather(location);
+}
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const location = input.value;
+
   getCurrentWeather(location);
 });
 
@@ -37,6 +49,7 @@ async function getCurrentWeather(location) {
     setTemperature(responseData.current.temp_c);
     setCondition(responseData.current.condition.text);
     setFeelsLike(responseData.current.feelslike_c);
+    setWeatherIcon(responseData.current.condition.icon);
   } catch (error) {
     console.error("Failed to fetch weather data:", error.message);
     alert("Please enter a valid value!");
@@ -58,4 +71,8 @@ function setCondition(condition) {
 
 function setFeelsLike(feelsTemp) {
   feelsLike.textContent = `Feels like ${Math.round(feelsTemp)} °C`;
+}
+
+function setWeatherIcon(icon) {
+  weatherIcon.src = icon;
 }
