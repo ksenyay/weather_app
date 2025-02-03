@@ -142,11 +142,25 @@ body {
 }
 
 #location_text {
-  font-size: 1.25em;
+  font-size: 1.2em;
+}
+
+#location_text > * {
+  display: inline;
 }
 
 #current_temperature {
-  font-size: 3em;
+  font-size: 2.7em;
+}
+
+#current_temperature > * {
+  display: inline;
+}
+#celcius_sign::before {
+  content: "°";
+  font-size: 0.6em;
+  bottom: 12px;
+  position: relative;
 }
 
 #condition {
@@ -155,5 +169,5 @@ body {
 
 #feels_like {
   font-size: 0.75em;
-  color: white;
+  color: #dbdada;
 }
