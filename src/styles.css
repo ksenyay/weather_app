@@ -69,18 +69,35 @@ h6 {
   isolation: isolate;
 }
 
+/* FONT */
+
+@import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap");
+
+.barlow-regular {
+  font-family: "Barlow", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 /* LAYOUT */
 
 body {
   height: 100vh;
   width: 100%;
+  color: white;
+  font-family: "Barlow", serif;
+  font-weight: 400;
+  font-size: 20px;
 }
+
 #background {
   width: 100%;
   height: 100%;
   position: fixed;
   display: flex;
   align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #background::before {
@@ -118,4 +135,25 @@ body {
 
 #todays_weather {
   grid-area: today;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#location_text {
+  font-size: 1.25em;
+}
+
+#current_temperature {
+  font-size: 3em;
+}
+
+#condition {
+  font-size: 0.9em;
+}
+
+#feels_like {
+  font-size: 0.75em;
+  color: white;
 }
