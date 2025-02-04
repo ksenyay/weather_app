@@ -48,6 +48,7 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
   const location = input.value.trim();
   displayWeather(location);
+  displayForecast(location);
 });
 
 async function displayWeather(location) {
@@ -82,17 +83,25 @@ async function fetchCurrentWeather(location) {
 }
 
 // FORECAST
-
 class Forecast {
   constructor(data) {
-    this.forecast = data.forecast;
+    this.forecast = data.forecast.forecastday;
   }
 
-  printWeather() {
-    console.log(this.forecast);
-  }
+  updateForecastUI() {
+    for (let i = 0; i < 7; i++) {
+      const day = document.querySelector(`#forecast-${i + 1} .day`);
+      const condition = document.querySelector(`#forecast-${i + 1} img`);
+      const dayTemp = document.querySelector(`#forecast-${i + 1} .day-temp`);
 
-  displayForecast() {}
+      if (day && condition && dayTemp) {
+        let dayOfTheWeek = convertDate(this.forecast[i]["date"]);
+        day.textContent = dayOfTheWeek;
+        condition.src = this.forecast[i]["day"]["condition"]["icon"];
+        dayTemp.textContent = `${Math.round(this.forecast[i]["day"]["avgtemp_c"])} °C`;
+      }
+    }
+  }
 }
 
 async function fetchForecast(location) {
@@ -117,6 +126,24 @@ async function displayForecast(location) {
 
   const weatherData = await fetchForecast(location);
   if (weatherData) {
-    weatherData.printWeather();
+    weatherData.updateForecastUI();
   }
 }
+
+function convertDate(dateStr) {
+  const [year, month, day] = dateStr.split("-").map((num) => parseInt(num));
+  const date = new Date(year, month - 1, day);
+
+  const dayOfTheWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  return dayOfTheWeek[date.getDay()];
+}
+
+console.log(convertDate("06-02-2025"));
