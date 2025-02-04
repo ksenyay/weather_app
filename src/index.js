@@ -1,15 +1,18 @@
 import "./styles.css";
 
-const form = document.querySelector("#location_form");
-const input = document.querySelector("#location");
+const form = document.querySelector("form");
+const input = document.querySelector("input");
 const apiKey = "9b55a3d3f82343e0bde92555250302";
 const baseUrl = "http://api.weatherapi.com/v1";
 
 window.onload = function () {
   displayWeather("Lviv"); // Set a default location
+  displayForecast("Lviv");
 };
 
-class CurrentWeatherData {
+// CURRENT WEATHER & HUMIDITY
+
+class CurrentWeather {
   constructor(data) {
     this.city = data.location.name;
     this.country = data.location.country;
@@ -21,20 +24,20 @@ class CurrentWeatherData {
   }
 
   updateUI() {
-    document.querySelector("#city").textContent = `${this.city}, `;
-    document.querySelector("#country").textContent = this.country;
-    document.querySelector("#temperature").textContent =
+    document.querySelector(".city").textContent = `${this.city}, `;
+    document.querySelector(".country").textContent = this.country;
+    document.querySelector(".temperature").textContent =
       `${Math.round(this.currentTemp)}`;
-    document.querySelector("#condition").textContent = this.condition;
-    document.querySelector("#feels_like").textContent =
+    document.querySelector(".condition").textContent = this.condition;
+    document.querySelector(".feels-like").textContent =
       `Feels like ${Math.round(this.feelsLike)} °C`;
-    document.querySelector("#weather_icon").src = this.icon;
-    document.querySelector("#humidity_percentage").textContent =
+    document.querySelector(".weather-icon").src = this.icon;
+    document.querySelector(".humidity-percentage").textContent =
       `${this.humidity}%`;
   }
 
   updateHumidity() {
-    let circle = document.getElementById("fill-circle");
+    let circle = document.querySelector(".fill-circle");
     let maxDashOffset = 251.2; // Circumference of the circle (2 * π * r)
     let newOffset = maxDashOffset - (this.humidity / 100) * maxDashOffset;
     circle.style.strokeDashoffset = newOffset;
@@ -53,14 +56,14 @@ async function displayWeather(location) {
     return;
   }
 
-  const weatherData = await getCurrentWeather(location);
+  const weatherData = await fetchCurrentWeather(location);
   if (weatherData) {
     weatherData.updateUI();
     weatherData.updateHumidity();
   }
 }
 
-async function getCurrentWeather(location) {
+async function fetchCurrentWeather(location) {
   try {
     const response = await fetch(
       `${baseUrl}/current.json?key=${apiKey}&q=${encodeURIComponent(location)}`,
@@ -71,8 +74,7 @@ async function getCurrentWeather(location) {
     }
 
     const responseData = await response.json();
-    console.log(responseData);
-    return new CurrentWeatherData(responseData);
+    return new CurrentWeather(responseData);
   } catch (error) {
     console.error("Failed to fetch weather data:", error.message);
     alert("Please enter a valid value!");
@@ -81,15 +83,40 @@ async function getCurrentWeather(location) {
 
 // FORECAST
 
-/*async function getForecast() {
+class Forecast {
+  constructor(data) {
+    this.forecast = data.forecast;
+  }
+
+  printWeather() {
+    console.log(this.forecast);
+  }
+
+  displayForecast() {}
+}
+
+async function fetchForecast(location) {
   try {
     const response = await fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=9b55a3d3f82343e0bde92555250302&q=${encodeURIComponent(location)}&days=6`,
+      `${baseUrl}/forecast.json?key=${apiKey}&q=${encodeURIComponent(location)}&days=7`,
     );
     const responseData = await response.json();
     console.log(responseData);
+    return new Forecast(responseData);
   } catch (error) {
     console.error("Failed to fetch weather data:", error.message);
     alert("Please enter a valid value!");
   }
-}*/
+}
+
+async function displayForecast(location) {
+  if (!location) {
+    alert("The field cannot be empty!");
+    return;
+  }
+
+  const weatherData = await fetchForecast(location);
+  if (weatherData) {
+    weatherData.printWeather();
+  }
+}

@@ -7,46 +7,44 @@
     <title>Weather App</title>
 </head>
 <body>
-    <div id="background">
-        <form id="location_form">
-            <input type="text" id="location" name="location" value="Lviv" autocomplete="off">
+    <div class="background">
+        <form class="location-form">
+            <input type="text" class="location" name="location" value="Lviv" autocomplete="off">
             <button type="submit">Search</button>
         </form>
-        <div id="container">
-            <div class="element" id="weekly_weather">
-
-            </div>
-            <div class="element" id="todays_weather">
-                <div id="location_text" >
-                    <p id="city"></p>
-                    <p id="country"></p>
+        <section class="container">
+            <div class="element weekly-weather"></div>
+            <div class="element todays-weather">
+                <div class="location-text">
+                    <h3 class="city"></h3>
+                    <h3 class="country"></h3>
                 </div>
-                <div id="current_temperature">
-                    <p id="temperature"></p>
-                    <p id="celcius_sign">C</p>
+                <div class="current-temperature">
+                    <p class="temperature"></p>
+                    <p class="celcius-sign">C</p>
                 </div>
-               <div id="current_condition">
-                <p id="condition"></p>
-                <img src="#" alt="weather_icon" id="weather_icon">
-               </div>
-
-                <p id="feels_like"></p>
+                <div class="current-condition">
+                    <p class="condition"></p>
+                    <img src="#" alt="weather_icon" class="weather-icon">
+                </div>
+    
+                <p class="feels-like"></p>
             </div>
             <div class="element"></div>
             <div class="element"></div>
-            <div class="element" id="humidity">
-                <p>Humidity:</p>
-                <div class="humidity_container">
+            <div class="element humidity">
+                <h3>Humidity:</h3>
+                <div class="humidity-container">
                     <svg width="125" height="125" viewBox="0 0 100 100">
-                        <!--<circle cx="50" cy="50" r="40" stroke="#ddd" stroke-width="10" fill="none" />-->
-                        <circle id="fill-circle" cx="50" cy="50" r="40" stroke="var(--light-blue)" stroke-width="10" fill="none" 
+                        <circle class="fill-circle" cx="50" cy="50" r="40" stroke="var(--light-blue)" stroke-width="10" fill="none" 
                             stroke-dasharray="251.2" stroke-dashoffset="251.2" />
                     </svg>
-                    <h3 id="humidity_percentage">76%</h3>
+                    <p class="humidity-percentage">76%</p>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
+    
 
 </body>
 </html>
