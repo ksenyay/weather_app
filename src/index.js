@@ -2,99 +2,86 @@ import "./styles.css";
 
 const form = document.querySelector("#location_form");
 const input = document.querySelector("#location");
-
-// CURRENT WEATHER
-
-const currentCity = document.querySelector("#city");
-const currentCountry = document.querySelector("#country");
-const currentTemperature = document.querySelector("#temperature");
-const currentCondition = document.querySelector("#condition");
-const feelsLike = document.querySelector("#feels_like");
-const weatherIcon = document.querySelector("#weather_icon");
-
-// HUMIDITY
-
-const humidityText = document.querySelector("#humidity_percentage");
-
-// CURRENT WEATHER I AM AT OOP
+const apiKey = "9b55a3d3f82343e0bde92555250302";
+const baseUrl = "http://api.weatherapi.com/v1";
 
 window.onload = function () {
-  fetchWeather();
-  getForecast();
+  displayWeather("Lviv"); // Set a default location
 };
 
-function fetchWeather() {
-  const location = input.value.trim();
-
-  if (!location) {
-    alert("The field cannot be empty!");
+class CurrentWeatherData {
+  constructor(data) {
+    this.city = data.location.name;
+    this.country = data.location.country;
+    this.currentTemp = data.current.temp_c;
+    this.condition = data.current.condition.text;
+    this.feelsLike = data.current.feelslike_c;
+    this.icon = data.current.condition.icon;
+    this.humidity = data.current.humidity;
   }
-  getCurrentWeather(location);
+
+  updateUI() {
+    document.querySelector("#city").textContent = `${this.city}, `;
+    document.querySelector("#country").textContent = this.country;
+    document.querySelector("#temperature").textContent =
+      `${Math.round(this.currentTemp)}`;
+    document.querySelector("#condition").textContent = this.condition;
+    document.querySelector("#feels_like").textContent =
+      `Feels like ${Math.round(this.feelsLike)} °C`;
+    document.querySelector("#weather_icon").src = this.icon;
+    document.querySelector("#humidity_percentage").textContent =
+      `${this.humidity}%`;
+  }
+
+  updateHumidity() {
+    let circle = document.getElementById("fill-circle");
+    let maxDashOffset = 251.2; // Circumference of the circle (2 * π * r)
+    let newOffset = maxDashOffset - (this.humidity / 100) * maxDashOffset;
+    circle.style.strokeDashoffset = newOffset;
+  }
 }
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  const location = input.value;
-
-  getCurrentWeather(location);
+  const location = input.value.trim();
+  displayWeather(location);
 });
+
+async function displayWeather(location) {
+  if (!location) {
+    alert("The field cannot be empty!");
+    return;
+  }
+
+  const weatherData = await getCurrentWeather(location);
+  if (weatherData) {
+    weatherData.updateUI();
+    weatherData.updateHumidity();
+  }
+}
 
 async function getCurrentWeather(location) {
   try {
     const response = await fetch(
-      `http://api.weatherapi.com/v1/current.json?key=9b55a3d3f82343e0bde92555250302&q=${encodeURIComponent(location)}`,
+      `${baseUrl}/current.json?key=${apiKey}&q=${encodeURIComponent(location)}`,
     );
 
     if (!response.ok) {
       throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
-    const responseData = await response.json();
 
-    setLocation(responseData.location.name, responseData.location.country);
-    setTemperature(responseData.current.temp_c);
-    setCondition(responseData.current.condition.text);
-    setFeelsLike(responseData.current.feelslike_c);
-    setWeatherIcon(responseData.current.condition.icon);
-    updateFill(responseData.current.humidity);
+    const responseData = await response.json();
+    console.log(responseData);
+    return new CurrentWeatherData(responseData);
   } catch (error) {
     console.error("Failed to fetch weather data:", error.message);
     alert("Please enter a valid value!");
   }
 }
 
-function setLocation(city, country) {
-  currentCity.textContent = `${city}, `;
-  currentCountry.textContent = country;
-}
-
-function setTemperature(temp) {
-  currentTemperature.textContent = `${Math.round(temp)}`;
-}
-
-function setCondition(condition) {
-  currentCondition.textContent = condition;
-}
-
-function setFeelsLike(feelsTemp) {
-  feelsLike.textContent = `Feels like ${Math.round(feelsTemp)} °C`;
-}
-
-function setWeatherIcon(icon) {
-  weatherIcon.src = icon;
-}
-
-function updateFill(humidity) {
-  let input = humidity;
-  humidityText.textContent = `${humidity}%`;
-  let circle = document.getElementById("fill-circle");
-  let maxDashOffset = 251.2; // Circumference of the circle (2 * π * r)
-  let newOffset = maxDashOffset - (input / 100) * maxDashOffset;
-  circle.style.strokeDashoffset = newOffset;
-}
-
 // FORECAST
 
-async function getForecast() {
+/*async function getForecast() {
   try {
     const response = await fetch(
       `http://api.weatherapi.com/v1/forecast.json?key=9b55a3d3f82343e0bde92555250302&q=${encodeURIComponent(location)}&days=6`,
@@ -105,6 +92,4 @@ async function getForecast() {
     console.error("Failed to fetch weather data:", error.message);
     alert("Please enter a valid value!");
   }
-}
-
-// I CREATED STUFF ON OOP
+}*/
