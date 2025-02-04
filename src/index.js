@@ -16,8 +16,11 @@ const weatherIcon = document.querySelector("#weather_icon");
 
 const humidityText = document.querySelector("#humidity_percentage");
 
+// CURRENT WEATHER I AM AT OOP
+
 window.onload = function () {
   fetchWeather();
+  getForecast();
 };
 
 function fetchWeather() {
@@ -46,7 +49,7 @@ async function getCurrentWeather(location) {
       throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
     const responseData = await response.json();
-    console.log(responseData);
+
     setLocation(responseData.location.name, responseData.location.country);
     setTemperature(responseData.current.temp_c);
     setCondition(responseData.current.condition.text);
@@ -88,3 +91,20 @@ function updateFill(humidity) {
   let newOffset = maxDashOffset - (input / 100) * maxDashOffset;
   circle.style.strokeDashoffset = newOffset;
 }
+
+// FORECAST
+
+async function getForecast() {
+  try {
+    const response = await fetch(
+      `http://api.weatherapi.com/v1/forecast.json?key=9b55a3d3f82343e0bde92555250302&q=${encodeURIComponent(location)}&days=6`,
+    );
+    const responseData = await response.json();
+    console.log(responseData);
+  } catch (error) {
+    console.error("Failed to fetch weather data:", error.message);
+    alert("Please enter a valid value!");
+  }
+}
+
+// I CREATED STUFF ON OOP
