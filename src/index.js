@@ -8,6 +8,7 @@ const baseUrl = "http://api.weatherapi.com/v1";
 window.onload = function () {
   displayWeather("Lviv"); // Set a default location
   displayForecast("Lviv");
+  displayHourlyTemp("Lviv");
 };
 
 // CURRENT WEATHER & HUMIDITY
@@ -49,6 +50,7 @@ form.addEventListener("submit", (event) => {
   const location = input.value.trim();
   displayWeather(location);
   displayForecast(location);
+  displayHourlyTemp(location);
 });
 
 async function displayWeather(location) {
@@ -110,7 +112,6 @@ async function fetchForecast(location) {
       `${baseUrl}/forecast.json?key=${apiKey}&q=${encodeURIComponent(location)}&days=7`,
     );
     const responseData = await response.json();
-    console.log(responseData);
     return new Forecast(responseData);
   } catch (error) {
     console.error("Failed to fetch weather data:", error.message);
@@ -120,7 +121,6 @@ async function fetchForecast(location) {
 
 async function displayForecast(location) {
   if (!location) {
-    alert("The field cannot be empty!");
     return;
   }
 
@@ -146,4 +146,49 @@ function convertDate(dateStr) {
   return dayOfTheWeek[date.getDay()];
 }
 
-console.log(convertDate("06-02-2025"));
+// HOURLY FORECAST
+
+class HourlyWeather {
+  constructor(data) {
+    this.hourlyData = data.forecast.forecastday[0];
+    this.index = 0;
+  }
+
+  updateHourlyWeather() {
+    console.log(this.hourlyData.hour);
+    for (let i = 0; i <= 23; i += 3) {
+      let hour = this.hourlyData.hour[i];
+      console.log(hour);
+      if (hour) {
+        document.querySelector(`#hourly-${this.index + 1} div p`).textContent =
+          `${Math.round(hour.temp_c)} °C`;
+        document.querySelector(`#hourly-${this.index + 1} div img`).src =
+          hour.condition.icon;
+        this.index += 1;
+      }
+    }
+    document.querySelector(`#hourly-9 div p`).textContent =
+      `${Math.round(this.hourlyData.hour[23].temp_c)} °C`;
+    document.querySelector(`#hourly-9 div img`).src =
+      this.hourlyData.hour[23].condition.icon;
+  }
+}
+
+async function fetchHourlyTemp(location) {
+  const response = await fetch(
+    `${baseUrl}/forecast.json?key=${apiKey}&q=${encodeURIComponent(location)}&days=1`,
+  );
+  const responseData = await response.json();
+  return new HourlyWeather(responseData);
+}
+
+async function displayHourlyTemp(location) {
+  if (!location) {
+    return;
+  }
+
+  const weatherData = await fetchHourlyTemp(location);
+  if (weatherData) {
+    weatherData.updateHourlyWeather();
+  }
+}
