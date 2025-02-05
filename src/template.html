@@ -9,7 +9,7 @@
 <body>
     <div class="background">
         <form class="location-form">
-            <input type="text" class="location" name="location" value="Lviv" autocomplete="off">
+            <input type="text" name="location" value="Lviv" autocomplete="off">
             <button type="submit">Search</button>
         </form>
         <section class="container">
@@ -52,8 +52,7 @@
             </div>
             <div class="element current-weather">
                 <div class="location-text">
-                    <h3 class="city"></h3>
-                    <h3 class="country"></h3>
+                    <h3 class="location"></h3>
                 </div>
                 <div class="current-temperature">
                     <p class="temperature"></p>
@@ -65,7 +64,27 @@
                 </div>
                 <p class="feels-like"></p>
             </div>
-            <div class="element"></div>
+            <div class="element rain">
+                <h3>Weather details:</h3>
+                <div class="weather-details-container">
+                    <div class="weather-details">
+                        <p class="details-heading">Wind</p>
+                        <p id="wind" class="details-property"></p>
+                    </div>
+                    <div class="weather-details">
+                        <p class="details-heading">Precipation</p>
+                        <p id='rain' class="details-property"></p>
+                    </div>
+                    <div class="weather-details">
+                        <p class="details-heading">UV index</p>
+                        <p id="uv" class="details-property"></p>
+                    </div>
+                    <div class="weather-details">
+                        <p class="details-heading">Chance of rain</p>
+                        <p id="rain-chance" class="details-property"></p>
+                    </div>
+                </div>
+            </div>
             <div class="element hourly">
                 <div id="hourly-1" class="hourly-forecast">
                     <p>00:00</p>

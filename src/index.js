@@ -1,5 +1,7 @@
 import "./styles.css";
 
+document.body.style.zoom = "110%"; // Adjusting default page zoom
+
 const form = document.querySelector("form");
 const input = document.querySelector("input");
 const apiKey = "9b55a3d3f82343e0bde92555250302";
@@ -15,18 +17,19 @@ window.onload = function () {
 
 class CurrentWeather {
   constructor(data) {
-    this.city = data.location.name;
-    this.country = data.location.country;
+    this.location = `${data.location.name}, ${data.location.country}`;
     this.currentTemp = data.current.temp_c;
     this.condition = data.current.condition.text;
     this.feelsLike = data.current.feelslike_c;
     this.icon = data.current.condition.icon;
     this.humidity = data.current.humidity;
+    this.rain = data.current.precip_mm;
+    this.wind = data.current.wind_kph;
+    this.uv = data.current.uv;
   }
 
   updateUI() {
-    document.querySelector(".city").textContent = `${this.city}, `;
-    document.querySelector(".country").textContent = this.country;
+    document.querySelector(".location").textContent = this.location;
     document.querySelector(".temperature").textContent =
       `${Math.round(this.currentTemp)}`;
     document.querySelector(".condition").textContent = this.condition;
@@ -35,6 +38,10 @@ class CurrentWeather {
     document.querySelector(".weather-icon").src = this.icon;
     document.querySelector(".humidity-percentage").textContent =
       `${this.humidity}%`;
+    document.querySelector("#wind").textContent =
+      `${Math.round(this.wind)} km/h`;
+    document.querySelector("#rain").textContent = `${this.rain} mm`;
+    document.querySelector("#uv").textContent = `${this.uv}`;
   }
 
   updateHumidity() {
@@ -88,6 +95,7 @@ async function fetchCurrentWeather(location) {
 class Forecast {
   constructor(data) {
     this.forecast = data.forecast.forecastday;
+    this.chanceOfRain = data.forecast.forecastday[0].day.daily_chance_of_rain;
   }
 
   updateForecastUI() {
@@ -103,6 +111,8 @@ class Forecast {
         dayTemp.textContent = `${Math.round(this.forecast[i]["day"]["avgtemp_c"])} °C`;
       }
     }
+    document.querySelector("#rain-chance").textContent =
+      `${this.chanceOfRain}%`;
   }
 }
 
@@ -112,10 +122,10 @@ async function fetchForecast(location) {
       `${baseUrl}/forecast.json?key=${apiKey}&q=${encodeURIComponent(location)}&days=7`,
     );
     const responseData = await response.json();
+    console.log(responseData);
     return new Forecast(responseData);
   } catch (error) {
     console.error("Failed to fetch weather data:", error.message);
-    alert("Please enter a valid value!");
   }
 }
 
@@ -155,10 +165,8 @@ class HourlyWeather {
   }
 
   updateHourlyWeather() {
-    console.log(this.hourlyData.hour);
     for (let i = 0; i <= 23; i += 3) {
       let hour = this.hourlyData.hour[i];
-      console.log(hour);
       if (hour) {
         document.querySelector(`#hourly-${this.index + 1} div p`).textContent =
           `${Math.round(hour.temp_c)} °C`;
@@ -175,11 +183,15 @@ class HourlyWeather {
 }
 
 async function fetchHourlyTemp(location) {
-  const response = await fetch(
-    `${baseUrl}/forecast.json?key=${apiKey}&q=${encodeURIComponent(location)}&days=1`,
-  );
-  const responseData = await response.json();
-  return new HourlyWeather(responseData);
+  try {
+    const response = await fetch(
+      `${baseUrl}/forecast.json?key=${apiKey}&q=${encodeURIComponent(location)}&days=1`,
+    );
+    const responseData = await response.json();
+    return new HourlyWeather(responseData);
+  } catch (error) {
+    console.error("Failed to fetch weather data:", error.message);
+  }
 }
 
 async function displayHourlyTemp(location) {
