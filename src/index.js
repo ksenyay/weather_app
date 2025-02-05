@@ -9,6 +9,7 @@ const form = document.querySelector("form");
 const input = document.querySelector("input");
 
 window.onload = function () {
+  setBackground();
   displayWeather("Lviv"); // Set a default location
   displayForecast("Lviv");
   displayHourlyTemp("Lviv");
@@ -204,4 +205,20 @@ async function displayHourlyTemp(location) {
   if (weatherData) {
     weatherData.updateHourlyWeather();
   }
+}
+
+// THEME SELECTOR
+
+document
+  .querySelector("#backgrounds")
+  .addEventListener("change", setBackground);
+
+function setBackground() {
+  const select = document.querySelector("#backgrounds");
+  const appBackground = document.querySelector(".background");
+
+  const currentBackground = select.value;
+  console.log(currentBackground);
+
+  appBackground.style.backgroundImage = `url("img/${currentBackground}.jpg")`;
 }
