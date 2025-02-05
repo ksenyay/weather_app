@@ -391,3 +391,8 @@ circle {
 .details-property {
   font-size: 0.9em;
 }
+
+#test {
+  width: 100px;
+  height: 100px;
+}
