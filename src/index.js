@@ -1,11 +1,12 @@
 import "./styles.css";
 
+const apiKey = process.env.API_KEY;
+const baseUrl = process.env.API_URL;
+
 document.body.style.zoom = "110%"; // Adjusting default page zoom
 
 const form = document.querySelector("form");
 const input = document.querySelector("input");
-const apiKey = "9b55a3d3f82343e0bde92555250302";
-const baseUrl = "http://api.weatherapi.com/v1";
 
 window.onload = function () {
   displayWeather("Lviv"); // Set a default location

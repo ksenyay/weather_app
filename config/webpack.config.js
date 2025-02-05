@@ -1,5 +1,8 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 const path = require("path");
+const webpack = require("webpack");
+const dotenv = require("dotenv").config({ path: "./.env" });
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
@@ -18,6 +21,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/template.html",
     }),
+    new webpack.DefinePlugin({
+      "process.env": JSON.stringify({
+        API_KEY: process.env.API_KEY,
+        API_URL: process.env.API_URL,
+      }),
+    }),
   ],
   module: {
     rules: [
@@ -34,16 +43,11 @@ module.exports = {
         type: "asset/resource",
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: "asset/resource",
-      },
-      {
         test: /\.(?:js|mjs|cjs)$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
           options: {
-            targets: "defaults",
             presets: [["@babel/preset-env"]],
           },
         },
