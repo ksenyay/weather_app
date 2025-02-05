@@ -3,6 +3,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const dotenv = require("dotenv").config({ path: "./.env" });
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
@@ -26,6 +27,9 @@ module.exports = {
         API_KEY: process.env.API_KEY,
         API_URL: process.env.API_URL,
       }),
+    }),
+    new CopyWebpackPlugin({
+      patterns: [{ from: "src/img", to: "img" }],
     }),
   ],
   module: {

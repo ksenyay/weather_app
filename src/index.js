@@ -220,5 +220,5 @@ function setBackground() {
   const currentBackground = select.value;
   console.log(currentBackground);
 
-  appBackground.style.backgroundImage = `url("img/${currentBackground}.jpg")`;
+  appBackground.style.backgroundImage = `url("/img/${currentBackground}.jpg")`;
 }
