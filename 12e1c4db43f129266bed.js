@@ -328,7 +328,7 @@ function _displayHourlyTemp() {
 function setBackground(value) {
   var appBackground = document.querySelector(".background");
   console.log(value);
-  appBackground.style.backgroundImage = "url(\"/img/".concat(value, ".jpg\")");
+  appBackground.style.backgroundImage = "url(\"img/".concat(value, ".jpg\")");
 }
 function openDropdown(event) {
   event.stopPropagation(); // Prevents bubbling
