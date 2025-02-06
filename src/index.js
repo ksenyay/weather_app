@@ -214,7 +214,7 @@ function setBackground(value) {
   const appBackground = document.querySelector(".background");
   console.log(value);
 
-  appBackground.style.backgroundImage = `url("./img/${value}.jpg")`;
+  appBackground.style.backgroundImage = `url("weather_app/img/${value}.jpg")`;
 }
 
 function openDropdown(event) {
