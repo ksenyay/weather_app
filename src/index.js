@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import "./styles.css";
 
 const apiKey = process.env.API_KEY;
@@ -9,7 +10,7 @@ const form = document.querySelector("form");
 const input = document.querySelector("input");
 
 window.onload = function () {
-  setBackground();
+  setBackground("countryside");
   displayWeather("Lviv"); // Set a default location
   displayForecast("Lviv");
   displayHourlyTemp("Lviv");
@@ -209,16 +210,40 @@ async function displayHourlyTemp(location) {
 
 // THEME SELECTOR
 
-document
-  .querySelector("#backgrounds")
-  .addEventListener("change", setBackground);
-
-function setBackground() {
-  const select = document.querySelector("#backgrounds");
+function setBackground(value) {
   const appBackground = document.querySelector(".background");
+  console.log(value);
 
-  const currentBackground = select.value;
-  console.log(currentBackground);
-
-  appBackground.style.backgroundImage = `url("/img/${currentBackground}.jpg")`;
+  appBackground.style.backgroundImage = `url("/img/${value}.jpg")`;
 }
+
+function openDropdown(event) {
+  event.stopPropagation(); // Prevents bubbling
+  const dropdown = document.querySelector(".dropdown-container");
+  dropdown.classList.toggle("show");
+}
+
+document.addEventListener("click", function (event) {
+  const dropdown = document.querySelector(".dropdown-container");
+  if (!event.target.closest(".dropdown-container")) {
+    dropdown.classList.remove("show");
+  }
+});
+
+function selectDropdownElement() {
+  const dropdownElements = document.querySelectorAll(".dropdown-container div");
+  dropdownElements.forEach((element) => {
+    element.addEventListener("click", () => {
+      document.querySelector(".dropdown-button").textContent =
+        element.textContent;
+      document.querySelector(".dropdown-container").classList.remove("show");
+      setBackground(element.getAttribute("data-value"));
+    });
+  });
+}
+
+document
+  .querySelector(".dropdown-button")
+  .addEventListener("click", openDropdown);
+
+selectDropdownElement();
