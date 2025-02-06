@@ -3,190 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="747540bf5fc334c5e423.js" defer></script>
+    <script src="4176f39d4338a3a50ca0.js" defer></script>
     <title>Weather App</title>
 <script defer src="main.js"></script></head>
 <body>
     <div class="background">
-        <div>
-            <select id="backgrounds" name="backgrounds">
-                <option value="bamboo_forest">Bamboo Forest</option>
-                <option value="bridge">Bridge</option>
-                <option value="city">City</option>
-                <option value="countryside">Countryside</option>
-                <option value="desert">Desert</option>
-                <option value="evening_mountains">Evening Mountains</option>
-                <option value="foggy_city">Foggy City</option>
-                <option value="foggy_hills">Jungle</option>
-                <option value="forest_plants">Forest Plants</option>
-                <option value="green_forest">Green Forest</option>
-                <option value="highway">Highway</option>
-                <option value="jungle">Jungle</option>
-                <option value="rocky_mountains">Rocky Mountains</option>
-                <option value="sakura">Sakura</option>
-                <option value="spruces">Spruces</option>
-                <option value="summer_hills">Summer Hills</option>
-                <option value="summer_forest">Summer Forest</option>
-                <option value="tropical_forest">Tropical Forest</option>
-                <option value="village">Village</option>
-                <option value="winter_forest">Winter Forest</option>
-                <option value="winter_ocean">Winter Ocean</option>
-                <option value="winter_village">Winter Village</option>
-            </select>
+        <div class="dropdown">
+            <button class="dropdown-button">Select Theme</button>
+            <div class="dropdown-container">
+                <div data-value="bamboo_forest">Bamboo Forest</div>
+                <div data-value="bridge">Bridge</div>
+                <div data-value="city">City</div>
+                <div data-value="coastline">Coastline</div>
+                <div data-value="countryside">Countryside</div>
+                <div data-value="desert">Desert</div>
+                <div data-value="evening_mountains">Evening Mountains</div>
+                <div data-value="foggy_city">Foggy City</div>
+                <div data-value="foggy_hills">Foggy Hills</div>
+                <div data-value="forest_plants">Forest Plants</div>
+                <div data-value="green_forest">Green Forest</div>
+                <div data-value="highway">Highway</div>
+                <div data-value="jungle">Jungle</div>
+                <div data-value="lighting">Lighting</div>
+                <div data-value="remote_town">Remote Town</div>
+                <div data-value="sakura">Sakura</div>
+                <div data-value="spruces">Spruces</div>
+                <div data-value="sunny_forest">Sunny Forest</div>
+                <div data-value="thunderstorm">Thunderstorm</div>
+                <div data-value="tropical_forest">Tropical Forest</div>
+                <div data-value="village">Village</div>
+                <div data-value="winter_forest">Winter Forest</div>
+                <div data-value="winter_ocean">Winter Ocean</div>
+                <div data-value="winter_village">Winter Village</div>
+            </div>
         </div>
-        <form class="location-form">
-            <input type="text" name="location" value="Lviv" autocomplete="off">
-            <button type="submit">Search</button>
-        </form>
-        <section class="container">
-            <div class="element forecast">
-                <div id="forecast-1" class="forecast-element">
-                    <p class="day">Sunday</p>
-                    <img src="#" alt="">
-                    <p class='day-temp'>30 C</p>
-                </div>
-                <div id="forecast-2" class="forecast-element">
-                    <p class="day"></p>
-                    <img src="#" alt="">
-                    <p class='day-temp'></p>
-                </div>
-                <div id="forecast-3" class="forecast-element">
-                    <p class="day"></p>
-                    <img src="#" alt="">
-                    <p class='day-temp'></p>
-                </div>
-                <div id="forecast-4" class="forecast-element">
-                    <p class="day"></p>
-                    <img src="#" alt="">
-                    <p class='day-temp'></p>
-                </div>
-                <div id="forecast-5" class="forecast-element">
-                    <p class="day"></p>
-                    <img src="#" alt="">
-                    <p class='day-temp'></p>
-                </div>
-                <div id="forecast-6" class="forecast-element">
-                    <p class="day"></p>
-                    <img src="#" alt="">
-                    <p class='day-temp'></p>
-                </div>
-                <div id="forecast-7"class="forecast-element">
-                    <p class="day"></p>
-                    <img src="#" alt="">
-                    <p class='day-temp'></p>
-                </div>
-            </div>
-            <div class="element current-weather">
-                <div class="location-text">
-                    <h3 class="location"></h3>
-                </div>
-                <div class="current-temperature">
-                    <p class="temperature"></p>
-                    <p class="celcius-sign">C</p>
-                </div>
-                <div class="current-condition">
-                    <p class="condition"></p>
-                    <img src="#" alt="weather_icon" class="weather-icon">
-                </div>
-                <p class="feels-like"></p>
-            </div>
-            <div class="element rain">
-                <h3>Weather details:</h3>
-                <div class="weather-details-container">
-                    <div class="weather-details">
-                        <p class="details-heading">Wind</p>
-                        <p id="wind" class="details-property"></p>
+        <div class="page-container">
+            <form class="location-form">
+                <input type="text" name="location" value="Lviv" autocomplete="off">
+                <button type="submit">Search</button>
+            </form>
+            <section class="container">
+                <div class="element forecast">
+                    <div id="forecast-1" class="forecast-element">
+                        <p class="day">Sunday</p>
+                        <img src="#" alt="">
+                        <p class='day-temp'>30 C</p>
                     </div>
-                    <div class="weather-details">
-                        <p class="details-heading">Precipation</p>
-                        <p id='rain' class="details-property"></p>
+                    <div id="forecast-2" class="forecast-element">
+                        <p class="day"></p>
+                        <img src="#" alt="">
+                        <p class='day-temp'></p>
                     </div>
-                    <div class="weather-details">
-                        <p class="details-heading">UV index</p>
-                        <p id="uv" class="details-property"></p>
+                    <div id="forecast-3" class="forecast-element">
+                        <p class="day"></p>
+                        <img src="#" alt="">
+                        <p class='day-temp'></p>
                     </div>
-                    <div class="weather-details">
-                        <p class="details-heading">Chance of rain</p>
-                        <p id="rain-chance" class="details-property"></p>
+                    <div id="forecast-4" class="forecast-element">
+                        <p class="day"></p>
+                        <img src="#" alt="">
+                        <p class='day-temp'></p>
+                    </div>
+                    <div id="forecast-5" class="forecast-element">
+                        <p class="day"></p>
+                        <img src="#" alt="">
+                        <p class='day-temp'></p>
+                    </div>
+                    <div id="forecast-6" class="forecast-element">
+                        <p class="day"></p>
+                        <img src="#" alt="">
+                        <p class='day-temp'></p>
+                    </div>
+                    <div id="forecast-7"class="forecast-element">
+                        <p class="day"></p>
+                        <img src="#" alt="">
+                        <p class='day-temp'></p>
                     </div>
                 </div>
-            </div>
-            <div class="element hourly">
-                <div id="hourly-1" class="hourly-forecast">
-                    <p>00:00</p>
-                    <div>
-                        <p class="hourly-temp">30 C</p>
-                        <img src="#" alt="img">
+                <div class="element current-weather">
+                    <div class="location-text">
+                        <h3 class="location"></h3>
+                    </div>
+                    <div class="current-temperature">
+                        <p class="temperature"></p>
+                        <p class="celcius-sign">C</p>
+                    </div>
+                    <div class="current-condition">
+                        <p class="condition"></p>
+                        <img src="#" alt="weather_icon" class="weather-icon">
+                    </div>
+                    <p class="feels-like"></p>
+                </div>
+                <div class="element rain">
+                    <h3>Weather details:</h3>
+                    <div class="weather-details-container">
+                        <div class="weather-details">
+                            <p class="details-heading">Wind</p>
+                            <p id="wind" class="details-property"></p>
+                        </div>
+                        <div class="weather-details">
+                            <p class="details-heading">Precipation</p>
+                            <p id='rain' class="details-property"></p>
+                        </div>
+                        <div class="weather-details">
+                            <p class="details-heading">UV index</p>
+                            <p id="uv" class="details-property"></p>
+                        </div>
+                        <div class="weather-details">
+                            <p class="details-heading">Chance of rain</p>
+                            <p id="rain-chance" class="details-property"></p>
+                        </div>
                     </div>
                 </div>
-                <div id="hourly-2" class="hourly-forecast">
-                    <p>03:00</p>
-                    <div>
-                        <p class="hourly-temp">30 C</p>
-                        <img src="#" alt="img">
+                <div class="element hourly">
+                    <div id="hourly-1" class="hourly-forecast">
+                        <p>00:00</p>
+                        <div>
+                            <p class="hourly-temp">30 C</p>
+                            <img src="#" alt="img">
+                        </div>
+                    </div>
+                    <div id="hourly-2" class="hourly-forecast">
+                        <p>03:00</p>
+                        <div>
+                            <p class="hourly-temp">30 C</p>
+                            <img src="#" alt="img">
+                        </div>
+                    </div>
+                    <div id="hourly-3" class="hourly-forecast">
+                        <p>06:00</p>
+                        <div>
+                            <p class="hourly-temp">30 C</p>
+                            <img src="#" alt="img">
+                        </div>
+                    </div>
+                    <div id="hourly-4" class="hourly-forecast">
+                        <p>09:00</p>
+                        <div>
+                            <p class="hourly-temp">30 C</p>
+                            <img src="#" alt="img">
+                        </div>
+                    </div>
+                    <div id="hourly-5" class="hourly-forecast">
+                        <p>12:00</p>
+                        <div>
+                            <p class="hourly-temp">30 C</p>
+                            <img src="#" alt="img">
+                        </div>
+                    </div>
+                    <div id="hourly-6" class="hourly-forecast">
+                        <p>15:00</p>
+                        <div>
+                            <p class="hourly-temp">30 C</p>
+                            <img src="#" alt="img">
+                        </div>
+                    </div>
+                    <div id="hourly-7" class="hourly-forecast">
+                        <p>18:00</p>
+                        <div>
+                            <p class="hourly-temp">30 C</p>
+                            <img src="#" alt="img">
+                        </div>
+                    </div>
+                    <div id="hourly-8" class="hourly-forecast">
+                        <p>21:00</p>
+                        <div>
+                            <p class="hourly-temp">30 C</p>
+                            <img src="#" alt="img">
+                        </div>
+                    </div>
+                    <div id="hourly-9" class="hourly-forecast">
+                        <p>23:00</p>
+                        <div>
+                            <p class="hourly-temp">30 C</p>
+                            <img src="#" alt="img">
+                        </div>
                     </div>
                 </div>
-                <div id="hourly-3" class="hourly-forecast">
-                    <p>06:00</p>
-                    <div>
-                        <p class="hourly-temp">30 C</p>
-                        <img src="#" alt="img">
+                <div class="element humidity">
+                    <h3>Humidity:</h3>
+                    <div class="humidity-container">
+                        <svg width="125" height="125" viewBox="0 0 100 100">
+                            <circle class="fill-circle" cx="50" cy="50" r="40" stroke="var(--light-blue)" stroke-width="10" fill="none" 
+                                stroke-dasharray="251.2" stroke-dashoffset="251.2" />
+                        </svg>
+                        <p class="humidity-percentage">76%</p>
                     </div>
                 </div>
-                <div id="hourly-4" class="hourly-forecast">
-                    <p>09:00</p>
-                    <div>
-                        <p class="hourly-temp">30 C</p>
-                        <img src="#" alt="img">
-                    </div>
-                </div>
-                <div id="hourly-5" class="hourly-forecast">
-                    <p>12:00</p>
-                    <div>
-                        <p class="hourly-temp">30 C</p>
-                        <img src="#" alt="img">
-                    </div>
-                </div>
-                <div id="hourly-6" class="hourly-forecast">
-                    <p>15:00</p>
-                    <div>
-                        <p class="hourly-temp">30 C</p>
-                        <img src="#" alt="img">
-                    </div>
-                </div>
-                <div id="hourly-7" class="hourly-forecast">
-                    <p>18:00</p>
-                    <div>
-                        <p class="hourly-temp">30 C</p>
-                        <img src="#" alt="img">
-                    </div>
-                </div>
-                <div id="hourly-8" class="hourly-forecast">
-                    <p>21:00</p>
-                    <div>
-                        <p class="hourly-temp">30 C</p>
-                        <img src="#" alt="img">
-                    </div>
-                </div>
-                <div id="hourly-9" class="hourly-forecast">
-                    <p>23:00</p>
-                    <div>
-                        <p class="hourly-temp">30 C</p>
-                        <img src="#" alt="img">
-                    </div>
-                </div>
-            </div>
-            <div class="element humidity">
-                <h3>Humidity:</h3>
-                <div class="humidity-container">
-                    <svg width="125" height="125" viewBox="0 0 100 100">
-                        <circle class="fill-circle" cx="50" cy="50" r="40" stroke="var(--light-blue)" stroke-width="10" fill="none" 
-                            stroke-dasharray="251.2" stroke-dashoffset="251.2" />
-                    </svg>
-                    <p class="humidity-percentage">76%</p>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
+           
     </div>
     
 
