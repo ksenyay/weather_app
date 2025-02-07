@@ -396,12 +396,19 @@ circle {
   font-size: 0.9em;
 }
 
-#uv {
-  border-bottom: 2px solid red;
+#uv,
+#rain,
+#wind {
   padding-bottom: 3px;
 }
 
-#uv-details {
+#uv-details,
+#rain-details,
+#wind-details {
+  cursor: pointer;
+}
+
+#chance-of-rain-details {
   cursor: default;
 }
 

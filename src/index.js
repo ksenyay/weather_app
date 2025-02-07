@@ -1,55 +1,124 @@
 /* eslint-disable no-undef */
 import "./styles.css";
 
-const apiKey = process.env.API_KEY;
-const baseUrl = process.env.API_URL;
+////////////////////////////////////////////////////////////////////////////////////
 
 document.body.style.zoom = "110%"; // Adjusting default page zoom
 
-const form = document.querySelector("form");
-const input = document.querySelector("input");
+// Hangle display of the data on the page
 
-window.onload = function () {
-  setBackground("countryside");
-  displayWeather("Lviv"); // Set a default location
-  displayForecast("Lviv");
-  displayHourlyTemp("Lviv");
-};
-
-// CURRENT WEATHER & HUMIDITY
-
-class CurrentWeather {
-  constructor(data) {
-    this.location = `${data.location.name}, ${data.location.country}`;
-    this.currentTemp = data.current.temp_c;
-    this.condition = data.current.condition.text;
-    this.feelsLike = data.current.feelslike_c;
-    this.icon = data.current.condition.icon;
-    this.humidity = data.current.humidity;
-    this.rain = data.current.precip_mm;
-    this.wind = data.current.wind_kph;
-    this.uv = data.current.uv;
+class UIManager {
+  static updateLocation(location) {
+    document.querySelector(".location").textContent = location;
   }
 
-  updateUI() {
-    document.querySelector(".location").textContent = this.location;
-    document.querySelector(".temperature").textContent =
-      `${Math.round(this.currentTemp)}`;
-    document.querySelector(".condition").textContent = this.condition;
+  static updateCurrentTemp(temp) {
+    document.querySelector(".temperature").textContent = `${Math.round(temp)}`;
+  }
+
+  static updateCondition(condition) {
+    document.querySelector(".condition").textContent = condition;
+  }
+
+  static updateFeelsLike(feelsLike) {
     document.querySelector(".feels-like").textContent =
-      `Feels like ${Math.round(this.feelsLike)} °C`;
-    document.querySelector(".weather-icon").src = this.icon;
-    document.querySelector(".humidity-percentage").textContent =
-      `${this.humidity}%`;
-    document.querySelector("#wind").textContent =
-      `${Math.round(this.wind)} km/h`;
-    document.querySelector("#rain").textContent = `${this.rain} mm`;
+      `Feels like ${Math.round(feelsLike)} °C`;
   }
 
-  updateUv() {
+  static updateIcon(icon) {
+    document.querySelector(".weather-icon").src = icon;
+  }
+
+  static updateHumidity(humidity) {
+    document.querySelector(".humidity-percentage").textContent = `${humidity}%`;
+
+    let circle = document.querySelector(".fill-circle");
+    let maxDashOffset = 251.2; // Circumference of the circle (2 * π * r)
+    let newOffset = maxDashOffset - (humidity / 100) * maxDashOffset;
+    circle.style.strokeDashoffset = newOffset;
+  }
+
+  static updateWind(wind) {
+    const windIndex = document.querySelector("#wind");
+    const windContainer = document.querySelector("#wind-details");
+    const roundedWind = Math.round(wind);
+
+    // Update the title and the border color based on wind speed
+    if (roundedWind < 1) {
+      windContainer.title = "Calm";
+      windIndex.style.borderBottom = "2px solid rgba(255, 255, 255, 0.8)";
+    } else if (roundedWind >= 1 && roundedWind <= 5) {
+      windContainer.title = "Light air";
+      windIndex.style.borderBottom = "2px solid rgba(174, 241, 249, 0.8)";
+    } else if (roundedWind > 5 && roundedWind <= 11) {
+      windContainer.title = "Light breeze";
+      windIndex.style.borderBottom = "2px solid rgba(150, 247, 220, 0.8)";
+    } else if (roundedWind > 11 && roundedWind <= 19) {
+      windContainer.title = "Gentle breeze";
+      windIndex.style.borderBottom = "2px solid rgba(150, 247, 180, 0.8)";
+    } else if (roundedWind > 19 && roundedWind <= 28) {
+      windContainer.title = "Moderate breeze";
+      windIndex.style.borderBottom = "2px solid rgba(111, 244, 111, 0.8)";
+    } else if (roundedWind > 29 && roundedWind <= 38) {
+      windContainer.title = "Fresh breeze";
+      windIndex.style.borderBottom = "2px solid rgba(115, 237, 18, 0.8)";
+    } else if (roundedWind > 38 && roundedWind <= 49) {
+      windContainer.title = "Strong breeze";
+      windIndex.style.borderBottom = "2px solid rgba(164, 237, 18, 0.8)";
+    } else if (roundedWind > 49 && roundedWind <= 61) {
+      windContainer.title = "Moderate Gale";
+      windIndex.style.borderBottom = "2px solid rgba(218, 237, 18, 0.8)";
+    } else if (roundedWind > 61 && roundedWind <= 74) {
+      windContainer.title = "Gale";
+      windIndex.style.borderBottom = "2px solid rgba(237, 194, 18, 0.8)";
+    } else if (roundedWind > 74 && roundedWind <= 88) {
+      windContainer.title = "Strong Gale";
+      windIndex.style.borderBottom = "2px solid rgba(237, 143, 18, 0.8)";
+    } else if (roundedWind > 102 && roundedWind <= 117) {
+      windContainer.title = "Violent Storm";
+      windIndex.style.borderBottom = "2px solid rgba(237, 99, 18, 0.8)";
+    } else if (roundedWind >= 118) {
+      windContainer.title = "Hurricane Force";
+      windIndex.style.borderBottom = "2px solid rgba(213, 16, 45, 0.8)";
+    }
+
+    windIndex.textContent = `${roundedWind} km/h`;
+  }
+
+  static updateRain(rain) {
+    const rainIndex = document.querySelector("#rain");
+    const rainContainer = document.querySelector("#rain-details");
+
+    if (rain <= 0.5) {
+      rainContainer.title = "No rain";
+      rainIndex.style.borderBottom = "2px solid rgba(255, 255, 255, 0.8)";
+    } else if (rain > 0.5 && rain <= 2) {
+      rainContainer.title = "Weak rain";
+      rainIndex.style.borderBottom = "2px solid rgba(217, 236, 255, 0.8)";
+    } else if (rain > 2 && rain <= 6) {
+      rainContainer.title = "Moderate rain";
+      rainIndex.style.borderBottom = "2px solid rgba(160, 216, 255, 0.8)";
+    } else if (rain > 6 && rain <= 10) {
+      rainContainer.title = "Heavy rain";
+      rainIndex.style.borderBottom = "2px solid rgba(90, 179, 255, 0.8)";
+    } else if (rain > 10 && rain <= 18) {
+      rainContainer.title = "Very heavy rain";
+      rainIndex.style.borderBottom = "2px solid rgba(0, 140, 255, 0.8)";
+    } else if (rain > 18 && rain <= 30) {
+      rainContainer.title = "Shower";
+      rainIndex.style.borderBottom = "2px solid rgba(0, 91, 187, 0.8)";
+    } else if (rain > 30) {
+      rainContainer.title = "Cloudburst";
+      rainIndex.style.borderBottom = "2px solid rgba(0, 47, 108, 0.8)";
+    }
+
+    rainIndex.textContent = `${rain} mm`;
+  }
+
+  static updateUv(uv) {
     const uvIndex = document.querySelector("#uv");
     const uvContainer = document.querySelector("#uv-details");
-    const roundedUv = Math.round(this.uv);
+    const roundedUv = Math.round(uv);
 
     if (roundedUv <= 2) {
       uvContainer.title = "Low";
@@ -71,102 +140,167 @@ class CurrentWeather {
     uvIndex.textContent = `${roundedUv}`;
   }
 
-  updateHumidity() {
-    let circle = document.querySelector(".fill-circle");
-    let maxDashOffset = 251.2; // Circumference of the circle (2 * π * r)
-    let newOffset = maxDashOffset - (this.humidity / 100) * maxDashOffset;
-    circle.style.strokeDashoffset = newOffset;
-  }
-}
-
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const location = input.value.trim();
-  displayWeather(location);
-  displayForecast(location);
-  displayHourlyTemp(location);
-});
-
-async function displayWeather(location) {
-  if (!location) {
-    alert("The field cannot be empty!");
-    return;
+  static updateChanceOfRain(chanceOfRain) {
+    document.querySelector("#rain-chance").textContent = `${chanceOfRain}%`;
   }
 
-  const weatherData = await fetchCurrentWeather(location);
-  if (weatherData) {
-    weatherData.updateUI();
-    weatherData.updateHumidity();
-    weatherData.updateUv();
-  }
-}
-
-async function fetchCurrentWeather(location) {
-  try {
-    const response = await fetch(
-      `${baseUrl}/current.json?key=${apiKey}&q=${encodeURIComponent(location)}`,
-    );
-
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status} ${response.statusText}`);
-    }
-
-    const responseData = await response.json();
-    return new CurrentWeather(responseData);
-  } catch (error) {
-    console.error("Failed to fetch weather data:", error.message);
-    alert("Please enter a valid value!");
-  }
-}
-
-// FORECAST
-class Forecast {
-  constructor(data) {
-    this.forecast = data.forecast.forecastday;
-    this.chanceOfRain = data.forecast.forecastday[0].day.daily_chance_of_rain;
-  }
-
-  updateForecastUI() {
+  static updateForecast(forecast) {
     for (let i = 0; i < 7; i++) {
       const day = document.querySelector(`#forecast-${i + 1} .day`);
       const condition = document.querySelector(`#forecast-${i + 1} img`);
       const dayTemp = document.querySelector(`#forecast-${i + 1} .day-temp`);
 
       if (day && condition && dayTemp) {
-        let dayOfTheWeek = convertDate(this.forecast[i]["date"]);
+        let dayOfTheWeek = convertDate(forecast[i]["date"]);
         day.textContent = dayOfTheWeek;
-        condition.src = this.forecast[i]["day"]["condition"]["icon"];
-        dayTemp.textContent = `${Math.round(this.forecast[i]["day"]["avgtemp_c"])} °C`;
+        condition.src = forecast[i]["day"]["condition"]["icon"];
+        dayTemp.textContent = `${Math.round(forecast[i]["day"]["avgtemp_c"])} °C`;
       }
     }
-    document.querySelector("#rain-chance").textContent =
-      `${this.chanceOfRain}%`;
+  }
+
+  static updateHourlyWeather(hourlyData) {
+    let index = 0;
+    for (let i = 0; i <= 23; i += 3) {
+      let hour = hourlyData.hour[i];
+      if (hour) {
+        document.querySelector(`#hourly-${index + 1} div p`).textContent =
+          `${Math.round(hour.temp_c)} °C`;
+        document.querySelector(`#hourly-${index + 1} div img`).src =
+          hour.condition.icon;
+        index += 1;
+      }
+    }
+    document.querySelector(`#hourly-9 div p`).textContent =
+      `${Math.round(hourlyData.hour[23].temp_c)} °C`;
+    document.querySelector(`#hourly-9 div img`).src =
+      hourlyData.hour[23].condition.icon;
   }
 }
 
-async function fetchForecast(location) {
-  try {
-    const response = await fetch(
-      `${baseUrl}/forecast.json?key=${apiKey}&q=${encodeURIComponent(location)}&days=7`,
+// Stores current weather data from API
+
+class CurrentWeather {
+  constructor(data) {
+    this.location = `${data.location.name}, ${data.location.country}`;
+    this.currentTemp = data.current.temp_c;
+    this.condition = data.current.condition.text;
+    this.feelsLike = data.current.feelslike_c;
+    this.icon = data.current.condition.icon;
+    this.humidity = data.current.humidity;
+    this.rain = data.current.precip_mm;
+    this.wind = data.current.wind_kph;
+    this.uv = data.current.uv;
+  }
+}
+
+// Stores forecast data from API
+
+class Forecast {
+  constructor(data) {
+    this.forecast = data.forecast.forecastday;
+    this.chanceOfRain = data.forecast.forecastday[0].day.daily_chance_of_rain;
+    this.hourlyData = data.forecast.forecastday[0];
+  }
+}
+
+// Handles fetch activities
+
+class APIHandler {
+  constructor(apiKey, baseUrl) {
+    this.apiKey = apiKey;
+    this.baseUrl = baseUrl;
+  }
+
+  async fetchData(endpoint) {
+    try {
+      const response = await fetch(`${this.baseUrl}${endpoint}`);
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch: ${response.status} ${response.statusText}`,
+        );
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+      return;
+    }
+  }
+
+  fetchCurrentWeather(location) {
+    return this.fetchData(
+      `/current.json?key=${this.apiKey}&q=${encodeURIComponent(location)}`,
     );
-    const responseData = await response.json();
-    console.log(responseData);
-    return new Forecast(responseData);
-  } catch (error) {
-    console.error("Failed to fetch weather data:", error.message);
+  }
+
+  fetchForecast(location) {
+    return this.fetchData(
+      `/forecast.json?key=${this.apiKey}&q=${encodeURIComponent(location)}&days=7`,
+    );
   }
 }
 
-async function displayForecast(location) {
-  if (!location) {
-    return;
+// Handles events
+
+class EventHandler {
+  constructor(apiHandler) {
+    this.apiHandler = apiHandler;
   }
 
-  const weatherData = await fetchForecast(location);
-  if (weatherData) {
-    weatherData.updateForecastUI();
+  handleFormSubmit(event) {
+    event.preventDefault();
+    const location = document.querySelector("input").value.trim();
+    this.fetchAndDisplayWeather(location);
+  }
+
+  async fetchAndDisplayWeather(location) {
+    try {
+      if (!location) {
+        alert("The field cannot be empty!");
+        return;
+      }
+
+      const currentWeatherData =
+        await this.apiHandler.fetchCurrentWeather(location);
+      const forecastData = await this.apiHandler.fetchForecast(location);
+      const currentWeather = new CurrentWeather(currentWeatherData);
+      const forecast = new Forecast(forecastData);
+
+      UIManager.updateLocation(currentWeather.location);
+      UIManager.updateCurrentTemp(currentWeather.currentTemp);
+      UIManager.updateCondition(currentWeather.condition);
+      UIManager.updateFeelsLike(currentWeather.feelsLike);
+      UIManager.updateIcon(currentWeather.icon);
+      UIManager.updateHumidity(currentWeather.humidity);
+      UIManager.updateUv(currentWeather.uv);
+      UIManager.updateWind(currentWeather.wind);
+      UIManager.updateRain(currentWeather.rain);
+      UIManager.updateChanceOfRain(forecast.chanceOfRain);
+      UIManager.updateForecast(forecast.forecast);
+      UIManager.updateHourlyWeather(forecast.hourlyData);
+    } catch (error) {
+      alert("Failed to fetch weather data. Please try again.");
+      console.log(error);
+      return;
+    }
   }
 }
+
+// Initiating all the processes of the page load
+
+const apiHandler = new APIHandler(process.env.API_KEY, process.env.API_URL);
+const eventHandler = new EventHandler(apiHandler);
+
+window.onload = () => {
+  eventHandler.fetchAndDisplayWeather("Lviv"); // Set default location
+  document
+    .querySelector("form")
+    .addEventListener("submit", (event) =>
+      eventHandler.handleFormSubmit(event),
+    );
+};
+
+// Converts yyyy-mm-dd to the day of the week
 
 function convertDate(dateStr) {
   const [year, month, day] = dateStr.split("-").map((num) => parseInt(num));
@@ -184,56 +318,7 @@ function convertDate(dateStr) {
   return dayOfTheWeek[date.getDay()];
 }
 
-// HOURLY FORECAST
-
-class HourlyWeather {
-  constructor(data) {
-    this.hourlyData = data.forecast.forecastday[0];
-    this.index = 0;
-  }
-
-  updateHourlyWeather() {
-    for (let i = 0; i <= 23; i += 3) {
-      let hour = this.hourlyData.hour[i];
-      if (hour) {
-        document.querySelector(`#hourly-${this.index + 1} div p`).textContent =
-          `${Math.round(hour.temp_c)} °C`;
-        document.querySelector(`#hourly-${this.index + 1} div img`).src =
-          hour.condition.icon;
-        this.index += 1;
-      }
-    }
-    document.querySelector(`#hourly-9 div p`).textContent =
-      `${Math.round(this.hourlyData.hour[23].temp_c)} °C`;
-    document.querySelector(`#hourly-9 div img`).src =
-      this.hourlyData.hour[23].condition.icon;
-  }
-}
-
-async function fetchHourlyTemp(location) {
-  try {
-    const response = await fetch(
-      `${baseUrl}/forecast.json?key=${apiKey}&q=${encodeURIComponent(location)}&days=1`,
-    );
-    const responseData = await response.json();
-    return new HourlyWeather(responseData);
-  } catch (error) {
-    console.error("Failed to fetch weather data:", error.message);
-  }
-}
-
-async function displayHourlyTemp(location) {
-  if (!location) {
-    return;
-  }
-
-  const weatherData = await fetchHourlyTemp(location);
-  if (weatherData) {
-    weatherData.updateHourlyWeather();
-  }
-}
-
-// THEME SELECTOR
+// Theme Selector logic
 
 function setBackground(value) {
   const appBackground = document.querySelector(".background");
