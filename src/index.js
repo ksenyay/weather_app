@@ -57,7 +57,7 @@ class UIManager {
     document.querySelector(".humidity-percentage").textContent = `${humidity}%`;
 
     let circle = document.querySelector(".fill-circle");
-    let maxDashOffset = 251.2; // Circumference of the circle (2 * π * r)
+    let maxDashOffset = 251.2;
     let newOffset = maxDashOffset - (humidity / 100) * maxDashOffset;
     circle.style.strokeDashoffset = newOffset;
   }
@@ -304,10 +304,8 @@ class EventHandler {
       const alertData = await this.apiHandler.fetchAlert(location);
       const currentWeather = new CurrentWeather(currentWeatherData);
       const forecast = new Forecast(forecastData);
-      console.log(currentWeatherData);
 
       if (alertData.alerts.alert.length === 0) {
-        console.log("no alert");
         UIManager.removeAlert();
       } else {
         const alerts = new Alert(alertData);
@@ -348,7 +346,6 @@ window.onload = () => {
     .addEventListener("submit", (event) =>
       eventHandler.handleFormSubmit(event),
     );
-  setBackground("countryside");
 };
 
 // Converts yyyy-mm-dd to the day of the week
@@ -371,39 +368,53 @@ function convertDate(dateStr) {
 
 // Theme Selector logic
 
-function setBackground(value) {
-  const appBackground = document.querySelector(".background");
+class ThemeManager {
+  constructor(defaultBg) {
+    this.defaultBg = defaultBg;
+    this.appBackground = document.querySelector(".background");
+    this.dropdown = document.querySelector(".dropdown-container"); // Fixed naming
+    this.dropdownButton = document.querySelector(".dropdown-button"); // Fixed naming
+    this.init();
 
-  appBackground.style.backgroundImage = `url("img/${value}.jpg")`;
-}
-
-function openDropdown(event) {
-  event.stopPropagation(); // Prevents bubbling
-  const dropdown = document.querySelector(".dropdown-container");
-  dropdown.classList.toggle("show");
-}
-
-document.addEventListener("click", function (event) {
-  const dropdown = document.querySelector(".dropdown-container");
-  if (!event.target.closest(".dropdown-container")) {
-    dropdown.classList.remove("show");
+    this.setBackground(defaultBg);
   }
-});
 
-function selectDropdownElement() {
-  const dropdownElements = document.querySelectorAll(".dropdown-container div");
-  dropdownElements.forEach((element) => {
-    element.addEventListener("click", () => {
-      document.querySelector(".dropdown-button").textContent =
-        element.textContent;
-      document.querySelector(".dropdown-container").classList.remove("show");
-      setBackground(element.getAttribute("data-value"));
+  setBackground(value) {
+    this.appBackground.style.backgroundImage = `url("img/${value}.jpg")`;
+  }
+
+  openDropdown(event) {
+    event.stopPropagation();
+    this.dropdown.classList.toggle("show");
+  }
+
+  closeDropdown(event) {
+    if (!event.target.closest(".dropdown-container")) {
+      this.dropdown.classList.remove("show");
+    }
+  }
+
+  selectBackground() {
+    const dropdownElements = document.querySelectorAll(
+      ".dropdown-container div",
+    );
+    dropdownElements.forEach((element) => {
+      element.addEventListener("click", () => {
+        this.dropdownButton.textContent = element.textContent;
+        this.dropdown.classList.remove("show");
+        this.setBackground(element.getAttribute("data-value"));
+      });
     });
-  });
+  }
+
+  init() {
+    this.dropdownButton.addEventListener("click", (event) =>
+      this.openDropdown(event),
+    );
+    document.addEventListener("click", (event) => this.closeDropdown(event));
+    this.selectBackground(); // Fixed incorrect method call
+  }
 }
 
-document
-  .querySelector(".dropdown-button")
-  .addEventListener("click", openDropdown);
-
-selectDropdownElement();
+// Example usage
+new ThemeManager("countryside");
