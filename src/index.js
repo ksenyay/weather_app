@@ -39,6 +39,8 @@ class UIManager {
       alertElement.style.color = "#FFB84D";
     } else if (severity == "Minor") {
       alertElement.style.color = "#4D89FF";
+    } else if (severity == "Unknown") {
+      alertElement.style.color = "#4D89FF";
     }
 
     alertElement.textContent = alert;
@@ -117,22 +119,28 @@ class UIManager {
       rainContainer.title = "No rain";
       rainIndex.style.borderBottom = "2px solid rgba(255, 255, 255, 0.8)";
     } else if (rain > 0.5 && rain <= 2) {
-      rainContainer.title = "Weak rain";
-      rainIndex.style.borderBottom = "2px solid rgba(217, 236, 255, 0.8)";
+      rainContainer.title = "Light rain";
+
+      rainIndex.style.borderBottom = "2px solid rgba(160, 190, 255, 0.8)";
     } else if (rain > 2 && rain <= 6) {
       rainContainer.title = "Moderate rain";
-      rainIndex.style.borderBottom = "2px solid rgba(160, 216, 255, 0.8)";
+
+      rainIndex.style.borderBottom = "2px solid rgba(130, 180, 255, 0.8)";
     } else if (rain > 6 && rain <= 10) {
       rainContainer.title = "Heavy rain";
-      rainIndex.style.borderBottom = "2px solid rgba(90, 179, 255, 0.8)";
+
+      rainIndex.style.borderBottom = "2px solid rgba(90, 150, 255, 0.8)";
     } else if (rain > 10 && rain <= 18) {
       rainContainer.title = "Very heavy rain";
-      rainIndex.style.borderBottom = "2px solid rgba(0, 140, 255, 0.8)";
+
+      rainIndex.style.borderBottom = "2px solid rgba(0, 120, 255, 0.8)";
     } else if (rain > 18 && rain <= 30) {
       rainContainer.title = "Shower";
+
       rainIndex.style.borderBottom = "2px solid rgba(0, 91, 187, 0.8)";
     } else if (rain > 30) {
       rainContainer.title = "Cloudburst";
+
       rainIndex.style.borderBottom = "2px solid rgba(0, 47, 108, 0.8)";
     }
 
@@ -228,6 +236,8 @@ class Forecast {
   }
 }
 
+// Stores alert data
+
 class Alert {
   constructor(data) {
     this.alert = `${data.alerts.alert[0].severity} Weather Alert: ${data.alerts.alert[0].event}`;
@@ -304,6 +314,8 @@ class EventHandler {
       const alertData = await this.apiHandler.fetchAlert(location);
       const currentWeather = new CurrentWeather(currentWeatherData);
       const forecast = new Forecast(forecastData);
+      console.log(forecastData);
+      console.log(currentWeatherData);
 
       if (alertData.alerts.alert.length === 0) {
         UIManager.removeAlert();
@@ -346,6 +358,7 @@ window.onload = () => {
     .addEventListener("submit", (event) =>
       eventHandler.handleFormSubmit(event),
     );
+  new ThemeManager("countryside");
 };
 
 // Converts yyyy-mm-dd to the day of the week
@@ -372,8 +385,8 @@ class ThemeManager {
   constructor(defaultBg) {
     this.defaultBg = defaultBg;
     this.appBackground = document.querySelector(".background");
-    this.dropdown = document.querySelector(".dropdown-container"); // Fixed naming
-    this.dropdownButton = document.querySelector(".dropdown-button"); // Fixed naming
+    this.dropdown = document.querySelector(".dropdown-container");
+    this.dropdownButton = document.querySelector(".dropdown-button");
     this.init();
 
     this.setBackground(defaultBg);
@@ -412,9 +425,6 @@ class ThemeManager {
       this.openDropdown(event),
     );
     document.addEventListener("click", (event) => this.closeDropdown(event));
-    this.selectBackground(); // Fixed incorrect method call
+    this.selectBackground();
   }
 }
-
-// Example usage
-new ThemeManager("countryside");
