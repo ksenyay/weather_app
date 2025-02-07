@@ -51,11 +51,37 @@ var UIManager = /*#__PURE__*/function () {
       document.querySelector(".weather-icon").src = icon;
     }
   }, {
+    key: "updateAlert",
+    value: function updateAlert(alert, severity) {
+      var alertElement = document.querySelector(".alert");
+      if (severity == "Extreme") {
+        alertElement.style.color = "#FF4C4C";
+      } else if (severity == "Severe") {
+        alertElement.style.color = "#FF7F32";
+      } else if (severity == "Moderate") {
+        alertElement.style.color = "#FFB84D";
+      } else if (severity == "Minor") {
+        alertElement.style.color = "#4D89FF";
+      }
+      alertElement.textContent = alert;
+    }
+  }, {
+    key: "removeAlert",
+    value: function removeAlert() {
+      document.querySelector(".alert").textContent = "";
+      document.querySelector(".alert").title = "";
+    }
+  }, {
+    key: "updateAlertDescription",
+    value: function updateAlertDescription(alertDescription) {
+      document.querySelector(".alert").title = alertDescription;
+    }
+  }, {
     key: "updateHumidity",
     value: function updateHumidity(humidity) {
       document.querySelector(".humidity-percentage").textContent = "".concat(humidity, "%");
       var circle = document.querySelector(".fill-circle");
-      var maxDashOffset = 251.2; // Circumference of the circle (2 * π * r)
+      var maxDashOffset = 251.2;
       var newOffset = maxDashOffset - humidity / 100 * maxDashOffset;
       circle.style.strokeDashoffset = newOffset;
     }
@@ -213,6 +239,12 @@ var Forecast = /*#__PURE__*/_createClass(function Forecast(data) {
   this.forecast = data.forecast.forecastday;
   this.chanceOfRain = data.forecast.forecastday[0].day.daily_chance_of_rain;
   this.hourlyData = data.forecast.forecastday[0];
+});
+var Alert = /*#__PURE__*/_createClass(function Alert(data) {
+  _classCallCheck(this, Alert);
+  this.alert = "".concat(data.alerts.alert[0].severity, " Weather Alert: ").concat(data.alerts.alert[0].event);
+  this.alertDescription = data.alerts.alert[0].desc;
+  this.severity = data.alerts.alert[0].severity;
 }); // Handles fetch activities
 var APIHandler = /*#__PURE__*/function () {
   function APIHandler(apiKey, baseUrl) {
@@ -269,6 +301,11 @@ var APIHandler = /*#__PURE__*/function () {
     value: function fetchForecast(location) {
       return this.fetchData("/forecast.json?key=".concat(this.apiKey, "&q=").concat(encodeURIComponent(location), "&days=7"));
     }
+  }, {
+    key: "fetchAlert",
+    value: function fetchAlert(location) {
+      return this.fetchData("/alerts.json?key=".concat(this.apiKey, "&q=").concat(encodeURIComponent(location)));
+    }
   }]);
 }(); // Handles events
 var EventHandler = /*#__PURE__*/function () {
@@ -287,7 +324,7 @@ var EventHandler = /*#__PURE__*/function () {
     key: "fetchAndDisplayWeather",
     value: function () {
       var _fetchAndDisplayWeather = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2(location) {
-        var currentWeatherData, forecastData, currentWeather, forecast;
+        var currentWeatherData, forecastData, alertData, currentWeather, forecast, alerts;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
@@ -307,8 +344,20 @@ var EventHandler = /*#__PURE__*/function () {
               return this.apiHandler.fetchForecast(location);
             case 9:
               forecastData = _context2.sent;
+              _context2.next = 12;
+              return this.apiHandler.fetchAlert(location);
+            case 12:
+              alertData = _context2.sent;
               currentWeather = new CurrentWeather(currentWeatherData);
               forecast = new Forecast(forecastData);
+              if (alertData.alerts.alert.length === 0) {
+                UIManager.removeAlert();
+              } else {
+                alerts = new Alert(alertData);
+                UIManager.updateAlert(alerts.alert, alerts.severity);
+                UIManager.updateAlertDescription(alerts.alertDescription);
+              }
+              console.log(alertData);
               UIManager.updateLocation(currentWeather.location);
               UIManager.updateCurrentTemp(currentWeather.currentTemp);
               UIManager.updateCondition(currentWeather.condition);
@@ -321,19 +370,19 @@ var EventHandler = /*#__PURE__*/function () {
               UIManager.updateChanceOfRain(forecast.chanceOfRain);
               UIManager.updateForecast(forecast.forecast);
               UIManager.updateHourlyWeather(forecast.hourlyData);
-              _context2.next = 31;
+              _context2.next = 36;
               break;
-            case 26:
-              _context2.prev = 26;
+            case 31:
+              _context2.prev = 31;
               _context2.t0 = _context2["catch"](0);
               alert("Failed to fetch weather data. Please try again.");
               console.log(_context2.t0);
               return _context2.abrupt("return");
-            case 31:
+            case 36:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, this, [[0, 26]]);
+        }, _callee2, this, [[0, 31]]);
       }));
       function fetchAndDisplayWeather(_x2) {
         return _fetchAndDisplayWeather.apply(this, arguments);
@@ -349,7 +398,7 @@ window.onload = function () {
   document.querySelector("form").addEventListener("submit", function (event) {
     return eventHandler.handleFormSubmit(event);
   });
-  setBackground("countryside");
+  new ThemeManager("countryside");
 };
 
 // Converts yyyy-mm-dd to the day of the week
@@ -368,31 +417,58 @@ function convertDate(dateStr) {
 }
 
 // Theme Selector logic
-
-function setBackground(value) {
-  var appBackground = document.querySelector(".background");
-  appBackground.style.backgroundImage = "url(\"img/".concat(value, ".jpg\")");
-}
-function openDropdown(event) {
-  event.stopPropagation(); // Prevents bubbling
-  var dropdown = document.querySelector(".dropdown-container");
-  dropdown.classList.toggle("show");
-}
-document.addEventListener("click", function (event) {
-  var dropdown = document.querySelector(".dropdown-container");
-  if (!event.target.closest(".dropdown-container")) {
-    dropdown.classList.remove("show");
+var ThemeManager = /*#__PURE__*/function () {
+  function ThemeManager(defaultBg) {
+    _classCallCheck(this, ThemeManager);
+    this.defaultBg = defaultBg;
+    this.appBackground = document.querySelector(".background");
+    this.dropdown = document.querySelector(".dropdown-container");
+    this.dropdownButton = document.querySelector(".dropdown-button");
+    this.init();
+    this.setBackground(defaultBg);
   }
-});
-function selectDropdownElement() {
-  var dropdownElements = document.querySelectorAll(".dropdown-container div");
-  dropdownElements.forEach(function (element) {
-    element.addEventListener("click", function () {
-      document.querySelector(".dropdown-button").textContent = element.textContent;
-      document.querySelector(".dropdown-container").classList.remove("show");
-      setBackground(element.getAttribute("data-value"));
-    });
-  });
-}
-document.querySelector(".dropdown-button").addEventListener("click", openDropdown);
-selectDropdownElement();
+  return _createClass(ThemeManager, [{
+    key: "setBackground",
+    value: function setBackground(value) {
+      this.appBackground.style.backgroundImage = "url(\"img/".concat(value, ".jpg\")");
+    }
+  }, {
+    key: "openDropdown",
+    value: function openDropdown(event) {
+      event.stopPropagation();
+      this.dropdown.classList.toggle("show");
+    }
+  }, {
+    key: "closeDropdown",
+    value: function closeDropdown(event) {
+      if (!event.target.closest(".dropdown-container")) {
+        this.dropdown.classList.remove("show");
+      }
+    }
+  }, {
+    key: "selectBackground",
+    value: function selectBackground() {
+      var _this = this;
+      var dropdownElements = document.querySelectorAll(".dropdown-container div");
+      dropdownElements.forEach(function (element) {
+        element.addEventListener("click", function () {
+          _this.dropdownButton.textContent = element.textContent;
+          _this.dropdown.classList.remove("show");
+          _this.setBackground(element.getAttribute("data-value"));
+        });
+      });
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      var _this2 = this;
+      this.dropdownButton.addEventListener("click", function (event) {
+        return _this2.openDropdown(event);
+      });
+      document.addEventListener("click", function (event) {
+        return _this2.closeDropdown(event);
+      });
+      this.selectBackground();
+    }
+  }]);
+}();
