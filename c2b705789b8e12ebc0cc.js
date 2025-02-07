@@ -349,6 +349,7 @@ window.onload = function () {
   document.querySelector("form").addEventListener("submit", function (event) {
     return eventHandler.handleFormSubmit(event);
   });
+  setBackground("countryside");
 };
 
 // Converts yyyy-mm-dd to the day of the week
@@ -370,7 +371,6 @@ function convertDate(dateStr) {
 
 function setBackground(value) {
   var appBackground = document.querySelector(".background");
-  console.log(value);
   appBackground.style.backgroundImage = "url(\"img/".concat(value, ".jpg\")");
 }
 function openDropdown(event) {
