@@ -62,6 +62,8 @@ var UIManager = /*#__PURE__*/function () {
         alertElement.style.color = "#FFB84D";
       } else if (severity == "Minor") {
         alertElement.style.color = "#4D89FF";
+      } else if (severity == "Unknown") {
+        alertElement.style.color = "#4D89FF";
       }
       alertElement.textContent = alert;
     }
@@ -142,16 +144,16 @@ var UIManager = /*#__PURE__*/function () {
         rainIndex.style.borderBottom = "2px solid rgba(255, 255, 255, 0.8)";
       } else if (rain > 0.5 && rain <= 2) {
         rainContainer.title = "Weak rain";
-        rainIndex.style.borderBottom = "2px solid rgba(217, 236, 255, 0.8)";
+        rainIndex.style.borderBottom = "2px solid rgba(160, 190, 255, 0.8)";
       } else if (rain > 2 && rain <= 6) {
         rainContainer.title = "Moderate rain";
-        rainIndex.style.borderBottom = "2px solid rgba(160, 216, 255, 0.8)";
+        rainIndex.style.borderBottom = "2px solid rgba(130, 180, 255, 0.8)";
       } else if (rain > 6 && rain <= 10) {
         rainContainer.title = "Heavy rain";
-        rainIndex.style.borderBottom = "2px solid rgba(90, 179, 255, 0.8)";
+        rainIndex.style.borderBottom = "2px solid rgba(90, 150, 255, 0.8)";
       } else if (rain > 10 && rain <= 18) {
         rainContainer.title = "Very heavy rain";
-        rainIndex.style.borderBottom = "2px solid rgba(0, 140, 255, 0.8)";
+        rainIndex.style.borderBottom = "2px solid rgba(0, 120, 255, 0.8)";
       } else if (rain > 18 && rain <= 30) {
         rainContainer.title = "Shower";
         rainIndex.style.borderBottom = "2px solid rgba(0, 91, 187, 0.8)";
@@ -239,7 +241,7 @@ var Forecast = /*#__PURE__*/_createClass(function Forecast(data) {
   this.forecast = data.forecast.forecastday;
   this.chanceOfRain = data.forecast.forecastday[0].day.daily_chance_of_rain;
   this.hourlyData = data.forecast.forecastday[0];
-});
+}); // Stores alert data
 var Alert = /*#__PURE__*/_createClass(function Alert(data) {
   _classCallCheck(this, Alert);
   this.alert = "".concat(data.alerts.alert[0].severity, " Weather Alert: ").concat(data.alerts.alert[0].event);
@@ -350,6 +352,8 @@ var EventHandler = /*#__PURE__*/function () {
               alertData = _context2.sent;
               currentWeather = new CurrentWeather(currentWeatherData);
               forecast = new Forecast(forecastData);
+              console.log(forecastData);
+              console.log(currentWeatherData);
               if (alertData.alerts.alert.length === 0) {
                 UIManager.removeAlert();
               } else {
@@ -370,19 +374,19 @@ var EventHandler = /*#__PURE__*/function () {
               UIManager.updateChanceOfRain(forecast.chanceOfRain);
               UIManager.updateForecast(forecast.forecast);
               UIManager.updateHourlyWeather(forecast.hourlyData);
-              _context2.next = 36;
+              _context2.next = 38;
               break;
-            case 31:
-              _context2.prev = 31;
+            case 33:
+              _context2.prev = 33;
               _context2.t0 = _context2["catch"](0);
               alert("Failed to fetch weather data. Please try again.");
               console.log(_context2.t0);
               return _context2.abrupt("return");
-            case 36:
+            case 38:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, this, [[0, 31]]);
+        }, _callee2, this, [[0, 33]]);
       }));
       function fetchAndDisplayWeather(_x2) {
         return _fetchAndDisplayWeather.apply(this, arguments);
