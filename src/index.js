@@ -298,6 +298,7 @@ window.onload = () => {
     .addEventListener("submit", (event) =>
       eventHandler.handleFormSubmit(event),
     );
+  setBackground("countryside");
 };
 
 // Converts yyyy-mm-dd to the day of the week
@@ -322,7 +323,6 @@ function convertDate(dateStr) {
 
 function setBackground(value) {
   const appBackground = document.querySelector(".background");
-  console.log(value);
 
   appBackground.style.backgroundImage = `url("img/${value}.jpg")`;
 }
