@@ -29,6 +29,30 @@ class UIManager {
     document.querySelector(".weather-icon").src = icon;
   }
 
+  static updateAlert(alert, severity) {
+    const alertElement = document.querySelector(".alert");
+    if (severity == "Extreme") {
+      alertElement.style.color = "#FF4C4C";
+    } else if (severity == "Severe") {
+      alertElement.style.color = "#FF7F32";
+    } else if (severity == "Moderate") {
+      alertElement.style.color = "#FFB84D";
+    } else if (severity == "Minor") {
+      alertElement.style.color = "#4D89FF";
+    }
+
+    alertElement.textContent = alert;
+  }
+
+  static removeAlert() {
+    document.querySelector(".alert").textContent = "";
+    document.querySelector(".alert").title = "";
+  }
+
+  static updateAlertDescription(alertDescription) {
+    document.querySelector(".alert").title = alertDescription;
+  }
+
   static updateHumidity(humidity) {
     document.querySelector(".humidity-percentage").textContent = `${humidity}%`;
 
@@ -204,6 +228,14 @@ class Forecast {
   }
 }
 
+class Alert {
+  constructor(data) {
+    this.alert = `${data.alerts.alert[0].severity} Weather Alert: ${data.alerts.alert[0].event}`;
+    this.alertDescription = data.alerts.alert[0].desc;
+    this.severity = data.alerts.alert[0].severity;
+  }
+}
+
 // Handles fetch activities
 
 class APIHandler {
@@ -238,6 +270,12 @@ class APIHandler {
       `/forecast.json?key=${this.apiKey}&q=${encodeURIComponent(location)}&days=7`,
     );
   }
+
+  fetchAlert(location) {
+    return this.fetchData(
+      `/alerts.json?key=${this.apiKey}&q=${encodeURIComponent(location)}`,
+    );
+  }
 }
 
 // Handles events
@@ -263,9 +301,20 @@ class EventHandler {
       const currentWeatherData =
         await this.apiHandler.fetchCurrentWeather(location);
       const forecastData = await this.apiHandler.fetchForecast(location);
+      const alertData = await this.apiHandler.fetchAlert(location);
       const currentWeather = new CurrentWeather(currentWeatherData);
       const forecast = new Forecast(forecastData);
 
+      if (alertData.alerts.alert.length === 0) {
+        console.log("no alert");
+        UIManager.removeAlert();
+      } else {
+        const alerts = new Alert(alertData);
+        UIManager.updateAlert(alerts.alert, alerts.severity);
+        UIManager.updateAlertDescription(alerts.alertDescription);
+      }
+
+      console.log(alertData);
       UIManager.updateLocation(currentWeather.location);
       UIManager.updateCurrentTemp(currentWeather.currentTemp);
       UIManager.updateCondition(currentWeather.condition);

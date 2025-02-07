@@ -189,6 +189,13 @@ h3 {
   color: var(--grey-color);
 }
 
+.alert {
+  color: #da1e28;
+  font-size: 0.8em;
+  padding-top: 10px;
+  cursor: pointer;
+}
+
 /* INPUT */
 
 input {
