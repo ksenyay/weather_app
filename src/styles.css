@@ -396,6 +396,15 @@ circle {
   font-size: 0.9em;
 }
 
+#uv {
+  border-bottom: 2px solid red;
+  padding-bottom: 3px;
+}
+
+#uv-details {
+  cursor: default;
+}
+
 /* DROPDOWN LIST */
 
 .dropdown {

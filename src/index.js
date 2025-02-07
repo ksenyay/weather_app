@@ -44,7 +44,31 @@ class CurrentWeather {
     document.querySelector("#wind").textContent =
       `${Math.round(this.wind)} km/h`;
     document.querySelector("#rain").textContent = `${this.rain} mm`;
-    document.querySelector("#uv").textContent = `${this.uv}`;
+  }
+
+  updateUv() {
+    const uvIndex = document.querySelector("#uv");
+    const uvContainer = document.querySelector("#uv-details");
+    const roundedUv = Math.round(this.uv);
+
+    if (roundedUv <= 2) {
+      uvContainer.title = "Low";
+      uvIndex.style.borderBottom = "2px solid rgb(62, 167, 45)";
+    } else if (roundedUv > 2 && roundedUv <= 5) {
+      uvContainer.title = "Moderate";
+      uvIndex.style.borderBottom = "2px solid rgb(255, 243, 0)";
+    } else if (roundedUv > 5 && roundedUv <= 7) {
+      uvContainer.title = "High";
+      uvIndex.style.borderBottom = "2px solid rgb(241, 139, 0)";
+    } else if (roundedUv > 7 && roundedUv <= 10) {
+      uvContainer.title = "Very High";
+      uvIndex.style.borderBottom = "2px solid rgb(229, 50, 16)";
+    } else if (roundedUv >= 11) {
+      uvContainer.title = "Extreme";
+      uvIndex.style.borderBottom = "2px solid rgb(181, 103, 164)";
+    }
+
+    uvIndex.textContent = `${roundedUv}`;
   }
 
   updateHumidity() {
@@ -73,6 +97,7 @@ async function displayWeather(location) {
   if (weatherData) {
     weatherData.updateUI();
     weatherData.updateHumidity();
+    weatherData.updateUv();
   }
 }
 
