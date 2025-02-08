@@ -350,6 +350,8 @@ window.onload = () => {
   const savedCity = localStorage.getItem("userLocation") || "Lviv";
   const savedBg = localStorage.getItem("userBackground") || "countryside";
   eventHandler.fetchAndDisplayWeather(savedCity); // Set default location
+  document.querySelector(".dropdown-button").textContent =
+    localStorage.getItem("backgroundValue") || "Countryside";
   document
     .querySelector("form")
     .addEventListener("submit", (event) =>
@@ -412,6 +414,7 @@ class ThemeManager {
     dropdownElements.forEach((element) => {
       element.addEventListener("click", () => {
         this.dropdownButton.textContent = element.textContent;
+        localStorage.setItem("backgroundValue", element.textContent); // Name of the background
         this.dropdown.classList.remove("show");
         this.setBackground(element.getAttribute("data-value"));
       });
