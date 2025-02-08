@@ -378,19 +378,41 @@ function convertDate(dateStr) {
 // Theme Selector logic
 
 class ThemeManager {
-  constructor(defaultBg) {
-    this.defaultBg = defaultBg;
+  constructor(currentBg) {
+    this.defaultBg = "countryside";
     this.appBackground = document.querySelector(".background");
     this.dropdown = document.querySelector(".dropdown-container");
     this.dropdownButton = document.querySelector(".dropdown-button");
     this.init();
 
-    this.setBackground(defaultBg);
+    this.setBackground(currentBg);
   }
 
-  setBackground(value) {
-    this.appBackground.style.backgroundImage = `url("img/${value}.jpg")`;
-    localStorage.setItem("userBackground", value); // Saves background in local storage
+  async imageExists(image) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = image;
+    });
+  }
+
+  async setBackground(value) {
+    const imageUrl = `img/${value}.jpg`;
+    const imageExists = await this.imageExists(imageUrl);
+
+    if (imageExists) {
+      this.appBackground.style.backgroundImage = `url("img/${value}.jpg")`;
+      localStorage.setItem("userBackground", value); // Saves background in local storage
+    } else {
+      this.appBackground.style.backgroundImage = `url("img/${this.defaultBg}.jpg")`;
+      this.dropdownButton.textContent = `${this.defaultBg[0].toUpperCase()}${this.defaultBg.slice(1)}`;
+      localStorage.setItem("userBackground", this.defaultBg); // Saves default background if the image doesn't exist
+      localStorage.setItem(
+        "backgroundValue",
+        `${this.defaultBg[0].toUpperCase()}${this.defaultBg.slice(1)}`,
+      );
+    }
   }
 
   openDropdown(event) {
