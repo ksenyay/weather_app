@@ -99,13 +99,12 @@ class UIManager {
       windIndex.style.borderBottom = "2px solid rgba(237, 194, 18, 0.8)";
     } else if (roundedWind > 74 && roundedWind <= 88) {
       windContainer.title = "Strong Gale";
-      windIndex.style.borderBottom = "2px solid rgba(237, 143, 18, 0.8)";
+    } else if (roundedWind > 88 && roundedWind <= 102) {
+      windContainer.title = "Storm";
     } else if (roundedWind > 102 && roundedWind <= 117) {
       windContainer.title = "Violent Storm";
-      windIndex.style.borderBottom = "2px solid rgba(237, 99, 18, 0.8)";
-    } else if (roundedWind >= 118) {
-      windContainer.title = "Hurricane Force";
-      windIndex.style.borderBottom = "2px solid rgba(213, 16, 45, 0.8)";
+    } else if (roundedWind > 117) {
+      windContainer.title = "Hurricane";
     }
 
     windIndex.textContent = `${roundedWind} km/h`;
@@ -309,8 +308,6 @@ class EventHandler {
       const alertData = await this.apiHandler.fetchAlert(location);
       const currentWeather = new CurrentWeather(currentWeatherData);
       const forecast = new Forecast(forecastData);
-      console.log(forecastData);
-      console.log(currentWeatherData);
 
       if (alertData.alerts.alert.length === 0) {
         UIManager.removeAlert();
