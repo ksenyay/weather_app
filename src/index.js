@@ -291,17 +291,11 @@ class EventHandler {
   handleFormSubmit(event) {
     event.preventDefault();
     const location = document.querySelector("input").value.trim();
-    if (!location) {
-      alert("Please enter a city.");
-      return;
-    }
-    // localStorage.setItem("userLocation", location); // Saving city in local storage
     this.fetchAndDisplayWeather(location);
   }
 
   async fetchAndDisplayWeather(location) {
     try {
-      console.log(location);
       if (!location) {
         alert("The field cannot be empty!");
         return;
@@ -329,8 +323,6 @@ class EventHandler {
         UIManager.updateAlert(alerts.alert, alerts.severity);
         UIManager.updateAlertDescription(alerts.alertDescription);
       }
-
-      console.log(alertData);
       UIManager.updateLocation(currentWeather.location);
       UIManager.updateCurrentTemp(currentWeather.currentTemp);
       UIManager.updateCondition(currentWeather.condition);
@@ -357,7 +349,6 @@ const apiHandler = new APIHandler(process.env.API_KEY, process.env.API_URL);
 const eventHandler = new EventHandler(apiHandler);
 
 window.onload = () => {
-  localStorage.clear();
   const savedCity = localStorage.getItem("userLocation") || "Lviv";
   const savedBg = localStorage.getItem("userBackground") || "countryside";
   eventHandler.fetchAndDisplayWeather(savedCity); // Set default location
