@@ -292,6 +292,7 @@ class EventHandler {
   handleFormSubmit(event) {
     event.preventDefault();
     const location = document.querySelector("input").value.trim();
+    localStorage.setItem("userLocation", location); // Saving city in local storage
     this.fetchAndDisplayWeather(location);
   }
 
@@ -346,13 +347,15 @@ const apiHandler = new APIHandler(process.env.API_KEY, process.env.API_URL);
 const eventHandler = new EventHandler(apiHandler);
 
 window.onload = () => {
-  eventHandler.fetchAndDisplayWeather("Lviv"); // Set default location
+  const savedCity = localStorage.getItem("userLocation") || "Lviv";
+  const savedBg = localStorage.getItem("userBackground") || "countryside";
+  eventHandler.fetchAndDisplayWeather(savedCity); // Set default location
   document
     .querySelector("form")
     .addEventListener("submit", (event) =>
       eventHandler.handleFormSubmit(event),
     );
-  new ThemeManager("countryside");
+  new ThemeManager(savedBg);
 };
 
 // Converts yyyy-mm-dd to the day of the week
@@ -388,6 +391,7 @@ class ThemeManager {
 
   setBackground(value) {
     this.appBackground.style.backgroundImage = `url("img/${value}.jpg")`;
+    localStorage.setItem("userBackground", value); // Saves background in local storage
   }
 
   openDropdown(event) {
