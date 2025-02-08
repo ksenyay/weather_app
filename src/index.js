@@ -393,13 +393,9 @@ class ThemeManager {
     this.setBackground(currentBg);
   }
 
-  async imageExists(image) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = image;
-    });
+  async imageExists(imageUrl) {
+    const response = await fetch(imageUrl, { method: "HEAD" });
+    return response.ok;
   }
 
   async setBackground(value) {
