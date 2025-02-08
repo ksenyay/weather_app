@@ -141,25 +141,25 @@ var UIManager = /*#__PURE__*/function () {
       var rainContainer = document.querySelector("#rain-details");
       if (rain <= 0.5) {
         rainContainer.title = "No rain";
-        rainIndex.style.borderBottom = "2px solid rgba(255, 255, 255, 0.8)";
+        rainIndex.style.borderBottom = "2px solid rgba(255, 255, 255)";
       } else if (rain > 0.5 && rain <= 2) {
-        rainContainer.title = "Weak rain";
-        rainIndex.style.borderBottom = "2px solid rgba(160, 190, 255, 0.8)";
+        rainContainer.title = "Light rain";
+        rainIndex.style.borderBottom = "2px solid rgba(137, 194, 217)";
       } else if (rain > 2 && rain <= 6) {
         rainContainer.title = "Moderate rain";
-        rainIndex.style.borderBottom = "2px solid rgba(130, 180, 255, 0.8)";
+        rainIndex.style.borderBottom = "2px solid rgba(70, 143, 175)";
       } else if (rain > 6 && rain <= 10) {
         rainContainer.title = "Heavy rain";
-        rainIndex.style.borderBottom = "2px solid rgba(90, 150, 255, 0.8)";
+        rainIndex.style.borderBottom = "2px solid rgba(44, 125, 160)";
       } else if (rain > 10 && rain <= 18) {
         rainContainer.title = "Very heavy rain";
-        rainIndex.style.borderBottom = "2px solid rgba(0, 120, 255, 0.8)";
+        rainIndex.style.borderBottom = "2px solid rgba(1, 79, 134)";
       } else if (rain > 18 && rain <= 30) {
         rainContainer.title = "Shower";
-        rainIndex.style.borderBottom = "2px solid rgba(0, 91, 187, 0.8)";
+        rainIndex.style.borderBottom = "2px solid rgba(1, 58, 99)";
       } else if (rain > 30) {
         rainContainer.title = "Cloudburst";
-        rainIndex.style.borderBottom = "2px solid rgba(0, 47, 108, 0.8)";
+        rainIndex.style.borderBottom = "2px solid rgba(1, 42, 74)";
       }
       rainIndex.textContent = "".concat(rain, " mm");
     }
@@ -320,6 +320,7 @@ var EventHandler = /*#__PURE__*/function () {
     value: function handleFormSubmit(event) {
       event.preventDefault();
       var location = document.querySelector("input").value.trim();
+      localStorage.setItem("userLocation", location); // Saving city in local storage
       this.fetchAndDisplayWeather(location);
     }
   }, {
@@ -398,11 +399,13 @@ var EventHandler = /*#__PURE__*/function () {
 var apiHandler = new APIHandler(process.env.API_KEY, process.env.API_URL);
 var eventHandler = new EventHandler(apiHandler);
 window.onload = function () {
-  eventHandler.fetchAndDisplayWeather("Lviv"); // Set default location
+  var savedCity = localStorage.getItem("userLocation") || "Lviv";
+  var savedBg = localStorage.getItem("userBackground") || "countryside";
+  eventHandler.fetchAndDisplayWeather(savedCity); // Set default location
   document.querySelector("form").addEventListener("submit", function (event) {
     return eventHandler.handleFormSubmit(event);
   });
-  new ThemeManager("countryside");
+  new ThemeManager(savedBg);
 };
 
 // Converts yyyy-mm-dd to the day of the week
@@ -435,6 +438,7 @@ var ThemeManager = /*#__PURE__*/function () {
     key: "setBackground",
     value: function setBackground(value) {
       this.appBackground.style.backgroundImage = "url(\"img/".concat(value, ".jpg\")");
+      localStorage.setItem("userBackground", value); // Saves background in local storage
     }
   }, {
     key: "openDropdown",
