@@ -319,7 +319,11 @@ var EventHandler = /*#__PURE__*/function () {
     value: function handleFormSubmit(event) {
       event.preventDefault();
       var location = document.querySelector("input").value.trim();
-      localStorage.setItem("userLocation", location); // Saving city in local storage
+      if (!location) {
+        alert("Please enter a city.");
+        return;
+      }
+      // localStorage.setItem("userLocation", location); // Saving city in local storage
       this.fetchAndDisplayWeather(location);
     }
   }, {
@@ -331,24 +335,33 @@ var EventHandler = /*#__PURE__*/function () {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _context2.prev = 0;
+              console.log(location);
               if (location) {
-                _context2.next = 4;
+                _context2.next = 5;
                 break;
               }
               alert("The field cannot be empty!");
               return _context2.abrupt("return");
-            case 4:
-              _context2.next = 6;
+            case 5:
+              _context2.next = 7;
               return this.apiHandler.fetchCurrentWeather(location);
-            case 6:
+            case 7:
               currentWeatherData = _context2.sent;
-              _context2.next = 9;
+              if (!(!currentWeatherData || !currentWeatherData.location)) {
+                _context2.next = 11;
+                break;
+              }
+              alert("City not found! Please enter a valid city.");
+              return _context2.abrupt("return");
+            case 11:
+              localStorage.setItem("userLocation", location);
+              _context2.next = 14;
               return this.apiHandler.fetchForecast(location);
-            case 9:
+            case 14:
               forecastData = _context2.sent;
-              _context2.next = 12;
+              _context2.next = 17;
               return this.apiHandler.fetchAlert(location);
-            case 12:
+            case 17:
               alertData = _context2.sent;
               currentWeather = new CurrentWeather(currentWeatherData);
               forecast = new Forecast(forecastData);
@@ -372,19 +385,19 @@ var EventHandler = /*#__PURE__*/function () {
               UIManager.updateChanceOfRain(forecast.chanceOfRain);
               UIManager.updateForecast(forecast.forecast);
               UIManager.updateHourlyWeather(forecast.hourlyData);
-              _context2.next = 36;
+              _context2.next = 41;
               break;
-            case 31:
-              _context2.prev = 31;
+            case 36:
+              _context2.prev = 36;
               _context2.t0 = _context2["catch"](0);
               alert("Failed to fetch weather data. Please try again.");
               console.log(_context2.t0);
               return _context2.abrupt("return");
-            case 36:
+            case 41:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, this, [[0, 31]]);
+        }, _callee2, this, [[0, 36]]);
       }));
       function fetchAndDisplayWeather(_x2) {
         return _fetchAndDisplayWeather.apply(this, arguments);
@@ -396,6 +409,7 @@ var EventHandler = /*#__PURE__*/function () {
 var apiHandler = new APIHandler(process.env.API_KEY, process.env.API_URL);
 var eventHandler = new EventHandler(apiHandler);
 window.onload = function () {
+  localStorage.clear();
   var savedCity = localStorage.getItem("userLocation") || "Lviv";
   var savedBg = localStorage.getItem("userBackground") || "countryside";
   eventHandler.fetchAndDisplayWeather(savedCity); // Set default location
