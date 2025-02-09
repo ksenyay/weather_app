@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 const path = require("path");
 const webpack = require("webpack");
+require("dotenv").config();
 const dotenv = require("dotenv").config({ path: "./.env" });
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -23,10 +24,8 @@ module.exports = {
       template: "./src/template.html",
     }),
     new webpack.DefinePlugin({
-      "process.env": JSON.stringify({
-        API_KEY: process.env.API_KEY,
-        API_URL: process.env.API_URL,
-      }),
+      "process.env.API_KEY": JSON.stringify(process.env.API_KEY),
+      "process.env.API_URL": JSON.stringify(process.env.API_URL),
     }),
     new CopyWebpackPlugin({
       patterns: [{ from: "src/img", to: "img" }],

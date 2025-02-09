@@ -345,6 +345,7 @@ class EventHandler {
 
 // Initiating all the processes of the page load
 
+// eslint-disable-next-line no-undef
 const apiHandler = new APIHandler(process.env.API_KEY, process.env.API_URL);
 const eventHandler = new EventHandler(apiHandler);
 
