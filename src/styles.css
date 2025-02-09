@@ -435,6 +435,7 @@ circle {
 }
 
 .dropdown-button::after {
+  font-size: 17px;
   content: "﹀";
   position: absolute;
   right: 11px;
