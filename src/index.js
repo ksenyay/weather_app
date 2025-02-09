@@ -229,7 +229,7 @@ class Forecast {
   }
 }
 
-// Stores alert data
+// Stores alert data from API
 
 class Alert {
   constructor(data) {
