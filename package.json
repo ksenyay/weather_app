@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "babel src --out-dir dist",
     "dev": "webpack serve",
     "test": "jest",
     "deploy": "gh-pages -d dist"
@@ -13,8 +13,9 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@babel/core": "^7.26.7",
-    "@babel/preset-env": "^7.26.7",
+    "@babel/cli": "^7.26.4",
+    "@babel/core": "^7.26.8",
+    "@babel/preset-env": "^7.26.8",
     "@eslint/js": "^9.18.0",
     "babel-jest": "^29.7.0",
     "babel-loader": "^9.2.1",
