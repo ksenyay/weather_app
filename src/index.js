@@ -233,9 +233,10 @@ class Forecast {
 
 class Alert {
   constructor(data) {
-    this.alert = `${data.alerts.alert[0].severity} Weather Alert: ${data.alerts.alert[0].event}`;
-    this.alertDescription = data.alerts.alert[0].desc;
-    this.severity = data.alerts.alert[0].severity;
+    this.alertLength = data.alerts.alert.length;
+    this.alert = `${data.alerts.alert[this.alertLength - 1].severity} Weather Alert: ${data.alerts.alert[this.alertLength - 1].event}`;
+    this.alertDescription = data.alerts.alert[this.alertLength - 1].desc;
+    this.severity = data.alerts.alert[this.alertLength - 1].severity;
   }
 }
 
@@ -315,11 +316,12 @@ class EventHandler {
       const alertData = await this.apiHandler.fetchAlert(location);
       const currentWeather = new CurrentWeather(currentWeatherData);
       const forecast = new Forecast(forecastData);
-
+      console.log(alertData);
       if (alertData.alerts.alert.length === 0) {
         UIManager.removeAlert();
       } else {
         const alerts = new Alert(alertData);
+
         UIManager.updateAlert(alerts.alert, alerts.severity);
         UIManager.updateAlertDescription(alerts.alertDescription);
       }
