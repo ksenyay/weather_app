@@ -8,7 +8,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  mode: "development",
+  mode: "production",
   entry: "./src/index.js",
   output: {
     filename: "main.js",
