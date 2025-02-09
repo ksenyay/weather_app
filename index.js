@@ -99,25 +99,25 @@ class UIManager {
     const rainContainer = document.querySelector("#rain-details");
     if (rain <= 0.5) {
       rainContainer.title = "No rain";
-      rainIndex.style.borderBottom = "2px solid rgba(255, 255, 255)";
+      rainIndex.style.borderBottom = "2px solid #ffffff";
     } else if (rain > 0.5 && rain <= 2) {
       rainContainer.title = "Light rain";
-      rainIndex.style.borderBottom = "2px solid rgba(137, 194, 217)";
+      rainIndex.style.borderBottom = "2px solid #b3ddfa";
     } else if (rain > 2 && rain <= 6) {
       rainContainer.title = "Moderate rain";
-      rainIndex.style.borderBottom = "2px solid rgba(70, 143, 175)";
+      rainIndex.style.borderBottom = "2px solid #7cb5f7";
     } else if (rain > 6 && rain <= 10) {
       rainContainer.title = "Heavy rain";
-      rainIndex.style.borderBottom = "2px solid rgba(44, 125, 160)";
+      rainIndex.style.borderBottom = "2px solid #1e78d5";
     } else if (rain > 10 && rain <= 18) {
       rainContainer.title = "Very heavy rain";
-      rainIndex.style.borderBottom = "2px solid rgba(1, 79, 134)";
+      rainIndex.style.borderBottom = "2px solid #1a4b96";
     } else if (rain > 18 && rain <= 30) {
       rainContainer.title = "Shower";
-      rainIndex.style.borderBottom = "2px solid rgba(1, 58, 99)";
+      rainIndex.style.borderBottom = "2px solid #092a61";
     } else if (rain > 30) {
       rainContainer.title = "Cloudburst";
-      rainIndex.style.borderBottom = "2px solid rgba(1, 42, 74)";
+      rainIndex.style.borderBottom = "2px solid #00022b";
     }
     rainIndex.textContent = `${rain} mm`;
   }
@@ -374,5 +374,3 @@ function convertDate(dateStr) {
   const dayOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   return dayOfTheWeek[date.getDay()];
 }
-
-//
