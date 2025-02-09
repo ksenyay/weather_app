@@ -243,9 +243,10 @@ var Forecast = /*#__PURE__*/_createClass(function Forecast(data) {
 }); // Stores alert data
 var Alert = /*#__PURE__*/_createClass(function Alert(data) {
   _classCallCheck(this, Alert);
-  this.alert = "".concat(data.alerts.alert[0].severity, " Weather Alert: ").concat(data.alerts.alert[0].event);
-  this.alertDescription = data.alerts.alert[0].desc;
-  this.severity = data.alerts.alert[0].severity;
+  this.alertLength = data.alerts.alert.length;
+  this.alert = "".concat(data.alerts.alert[this.alertLength - 1].severity, " Weather Alert: ").concat(data.alerts.alert[this.alertLength - 1].event);
+  this.alertDescription = data.alerts.alert[this.alertLength - 1].desc;
+  this.severity = data.alerts.alert[this.alertLength - 1].severity;
 }); // Handles fetch activities
 var APIHandler = /*#__PURE__*/function () {
   function APIHandler(apiKey, baseUrl) {
@@ -359,6 +360,7 @@ var EventHandler = /*#__PURE__*/function () {
               alertData = _context2.sent;
               currentWeather = new CurrentWeather(currentWeatherData);
               forecast = new Forecast(forecastData);
+              console.log(alertData);
               if (alertData.alerts.alert.length === 0) {
                 UIManager.removeAlert();
               } else {
@@ -378,19 +380,19 @@ var EventHandler = /*#__PURE__*/function () {
               UIManager.updateChanceOfRain(forecast.chanceOfRain);
               UIManager.updateForecast(forecast.forecast);
               UIManager.updateHourlyWeather(forecast.hourlyData);
-              _context2.next = 39;
+              _context2.next = 40;
               break;
-            case 34:
-              _context2.prev = 34;
+            case 35:
+              _context2.prev = 35;
               _context2.t0 = _context2["catch"](0);
               alert("Failed to fetch weather data. Please try again.");
               console.log(_context2.t0);
               return _context2.abrupt("return");
-            case 39:
+            case 40:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, this, [[0, 34]]);
+        }, _callee2, this, [[0, 35]]);
       }));
       function fetchAndDisplayWeather(_x2) {
         return _fetchAndDisplayWeather.apply(this, arguments);
