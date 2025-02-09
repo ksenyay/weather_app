@@ -316,7 +316,6 @@ class EventHandler {
       const alertData = await this.apiHandler.fetchAlert(location);
       const currentWeather = new CurrentWeather(currentWeatherData);
       const forecast = new Forecast(forecastData);
-      console.log(alertData);
       if (alertData.alerts.alert.length === 0) {
         UIManager.removeAlert();
       } else {
