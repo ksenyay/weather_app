@@ -13,10 +13,9 @@ function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = 
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/* eslint-disable no-undef */
 import "./styles.css";
 
-////////////////////////////////////////////////////////////////////////////////////
+// Make font red
 
 document.body.style.zoom = "110%"; // Adjusting default page zoom
 
@@ -54,15 +53,15 @@ var UIManager = /*#__PURE__*/function () {
     key: "updateAlert",
     value: function updateAlert(alert, severity) {
       var alertElement = document.querySelector(".alert");
-      if (severity == "Extreme") {
+      if (severity === "Extreme") {
         alertElement.style.color = "#FF4C4C";
-      } else if (severity == "Severe") {
+      } else if (severity === "Severe") {
         alertElement.style.color = "#FF7F32";
-      } else if (severity == "Moderate") {
+      } else if (severity === "Moderate") {
         alertElement.style.color = "#FFB84D";
-      } else if (severity == "Minor") {
+      } else if (severity === "Minor") {
         alertElement.style.color = "#4D89FF";
-      } else if (severity == "Unknown") {
+      } else if (severity === "Unknown") {
         alertElement.style.color = "#4D89FF";
       }
       alertElement.textContent = alert;
@@ -240,7 +239,7 @@ var Forecast = /*#__PURE__*/_createClass(function Forecast(data) {
   this.forecast = data.forecast.forecastday;
   this.chanceOfRain = data.forecast.forecastday[0].day.daily_chance_of_rain;
   this.hourlyData = data.forecast.forecastday[0];
-}); // Stores alert data
+}); // Stores alert data from API
 var Alert = /*#__PURE__*/_createClass(function Alert(data) {
   _classCallCheck(this, Alert);
   this.alertLength = data.alerts.alert.length;
@@ -400,6 +399,7 @@ var EventHandler = /*#__PURE__*/function () {
     }()
   }]);
 }(); // Initiating all the processes of the page load
+// eslint-disable-next-line no-undef
 var apiHandler = new APIHandler(process.env.API_KEY, process.env.API_URL);
 var eventHandler = new EventHandler(apiHandler);
 window.onload = function () {
@@ -412,21 +412,6 @@ window.onload = function () {
   });
   new ThemeManager(savedBg);
 };
-
-// Converts yyyy-mm-dd to the day of the week
-
-function convertDate(dateStr) {
-  var _dateStr$split$map = dateStr.split("-").map(function (num) {
-      return parseInt(num);
-    }),
-    _dateStr$split$map2 = _slicedToArray(_dateStr$split$map, 3),
-    year = _dateStr$split$map2[0],
-    month = _dateStr$split$map2[1],
-    day = _dateStr$split$map2[2];
-  var date = new Date(year, month - 1, day);
-  var dayOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  return dayOfTheWeek[date.getDay()];
-}
 
 // Theme Selector logic
 var ThemeManager = /*#__PURE__*/function () {
@@ -538,4 +523,16 @@ var ThemeManager = /*#__PURE__*/function () {
       this.selectBackground();
     }
   }]);
-}();
+}(); // Converts yyyy-mm-dd to the day of the week
+function convertDate(dateStr) {
+  var _dateStr$split$map = dateStr.split("-").map(function (num) {
+      return parseInt(num);
+    }),
+    _dateStr$split$map2 = _slicedToArray(_dateStr$split$map, 3),
+    year = _dateStr$split$map2[0],
+    month = _dateStr$split$map2[1],
+    day = _dateStr$split$map2[2];
+  var date = new Date(year, month - 1, day);
+  var dayOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  return dayOfTheWeek[date.getDay()];
+}
