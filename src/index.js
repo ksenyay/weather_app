@@ -116,19 +116,19 @@ class UIManager {
       rainIndex.style.borderBottom = "2px solid #ffffff";
     } else if (rain > 0.5 && rain <= 2) {
       rainContainer.title = "Light rain";
-      rainIndex.style.borderBottom = "2px solid #c9e8fd";
+      rainIndex.style.borderBottom = "2px solid #b3ddfa";
     } else if (rain > 2 && rain <= 6) {
       rainContainer.title = "Moderate rain";
-      rainIndex.style.borderBottom = "2px solid #8fc8f3";
+      rainIndex.style.borderBottom = "2px solid #7cb5f7";
     } else if (rain > 6 && rain <= 10) {
       rainContainer.title = "Heavy rain";
-      rainIndex.style.borderBottom = "2px solid #1086ce";
+      rainIndex.style.borderBottom = "2px solid #1e78d5";
     } else if (rain > 10 && rain <= 18) {
       rainContainer.title = "Very heavy rain";
-      rainIndex.style.borderBottom = "2px solid #224d84";
+      rainIndex.style.borderBottom = "2px solid #1a4b96";
     } else if (rain > 18 && rain <= 30) {
       rainContainer.title = "Shower";
-      rainIndex.style.borderBottom = "2px solid #011e48";
+      rainIndex.style.borderBottom = "2px solid #092a61";
     } else if (rain > 30) {
       rainContainer.title = "Cloudburst";
       rainIndex.style.borderBottom = "2px solid #00022b";
