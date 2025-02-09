@@ -448,4 +448,3 @@ function convertDate(dateStr) {
   ];
   return dayOfTheWeek[date.getDay()];
 }
-//
