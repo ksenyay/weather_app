@@ -32,15 +32,15 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [{ from: "src/img", to: "img" }],
     }),
+    new MiniCssExtractPlugin({
+      filename: "styles.[contenthash].css", // Add content hash to CSS
+    }),
   ],
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: [
-          MiniCssExtractPlugin.loader, // Extract CSS to separate file
-          "css-loader", // Process CSS files
-        ],
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.html$/i,
