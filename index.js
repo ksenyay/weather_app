@@ -1,8 +1,6 @@
 "use strict";
 
 require("./styles.css");
-////////////////////////////////////////////////////////////////////////////////////
-
 document.body.style.zoom = "110%"; // Adjusting default page zoom
 
 // Hangle display of the data on the page
