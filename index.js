@@ -1,8 +1,6 @@
 "use strict";
 
 require("./styles.css");
-/* eslint-disable no-undef */
-
 ////////////////////////////////////////////////////////////////////////////////////
 
 document.body.style.zoom = "110%"; // Adjusting default page zoom
@@ -27,15 +25,15 @@ class UIManager {
   }
   static updateAlert(alert, severity) {
     const alertElement = document.querySelector(".alert");
-    if (severity == "Extreme") {
+    if (severity === "Extreme") {
       alertElement.style.color = "#FF4C4C";
-    } else if (severity == "Severe") {
+    } else if (severity === "Severe") {
       alertElement.style.color = "#FF7F32";
-    } else if (severity == "Moderate") {
+    } else if (severity === "Moderate") {
       alertElement.style.color = "#FFB84D";
-    } else if (severity == "Minor") {
+    } else if (severity === "Minor") {
       alertElement.style.color = "#4D89FF";
-    } else if (severity == "Unknown") {
+    } else if (severity === "Unknown") {
       alertElement.style.color = "#4D89FF";
     }
     alertElement.textContent = alert;
