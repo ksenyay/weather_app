@@ -31,9 +31,6 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [{ from: "src/img", to: "img" }],
     }),
-    new MiniCssExtractPlugin({
-      filename: "styles.[contenthash].css",
-    }),
   ],
   module: {
     rules: [
