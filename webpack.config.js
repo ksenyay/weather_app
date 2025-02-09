@@ -1,21 +1,19 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 const path = require("path");
 const webpack = require("webpack");
-require("dotenv").config();
-const dotenv = require("dotenv").config({ path: "./.env" });
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-  mode: "development",
+  mode: "production", // Change to production mode
   entry: "./src/index.js",
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
     clean: true,
   },
-  devtool: "eval-source-map",
+  devtool: "source-map",
   devServer: {
     watchFiles: ["./src/template.html"],
   },
@@ -30,12 +28,15 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [{ from: "src/img", to: "img" }],
     }),
+    new MiniCssExtractPlugin({
+      filename: "styles.css",
+    }),
   ],
   module: {
     rules: [
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
       {
         test: /\.html$/i,
