@@ -1,4 +1,4 @@
-import "src/styles.css";
+import "src/styles.css?v=1.1";
 
 document.body.style.zoom = "110%"; // Adjusting default page zoom
 
