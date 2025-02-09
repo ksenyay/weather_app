@@ -312,15 +312,6 @@ window.onload = () => {
   new ThemeManager(savedBg);
 };
 
-// Converts yyyy-mm-dd to the day of the week
-
-function convertDate(dateStr) {
-  const [year, month, day] = dateStr.split("-").map(num => parseInt(num));
-  const date = new Date(year, month - 1, day);
-  const dayOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  return dayOfTheWeek[date.getDay()];
-}
-
 // Theme Selector logic
 
 class ThemeManager {
@@ -376,4 +367,13 @@ class ThemeManager {
     document.addEventListener("click", event => this.closeDropdown(event));
     this.selectBackground();
   }
+}
+
+// Converts yyyy-mm-dd to the day of the week
+
+function convertDate(dateStr) {
+  const [year, month, day] = dateStr.split("-").map(num => parseInt(num));
+  const date = new Date(year, month - 1, day);
+  const dayOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  return dayOfTheWeek[date.getDay()];
 }
