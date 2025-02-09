@@ -360,7 +360,6 @@ var EventHandler = /*#__PURE__*/function () {
               alertData = _context2.sent;
               currentWeather = new CurrentWeather(currentWeatherData);
               forecast = new Forecast(forecastData);
-              console.log(alertData);
               if (alertData.alerts.alert.length === 0) {
                 UIManager.removeAlert();
               } else {
@@ -380,19 +379,19 @@ var EventHandler = /*#__PURE__*/function () {
               UIManager.updateChanceOfRain(forecast.chanceOfRain);
               UIManager.updateForecast(forecast.forecast);
               UIManager.updateHourlyWeather(forecast.hourlyData);
-              _context2.next = 40;
+              _context2.next = 39;
               break;
-            case 35:
-              _context2.prev = 35;
+            case 34:
+              _context2.prev = 34;
               _context2.t0 = _context2["catch"](0);
               alert("Failed to fetch weather data. Please try again.");
               console.log(_context2.t0);
               return _context2.abrupt("return");
-            case 40:
+            case 39:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, this, [[0, 35]]);
+        }, _callee2, this, [[0, 34]]);
       }));
       function fetchAndDisplayWeather(_x2) {
         return _fetchAndDisplayWeather.apply(this, arguments);
