@@ -533,4 +533,3 @@ function convertDate(dateStr) {
   var dayOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   return dayOfTheWeek[date.getDay()];
 }
-//
