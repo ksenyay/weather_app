@@ -190,7 +190,7 @@ var UIManager = /*#__PURE__*/function () {
   }, {
     key: "updateForecast",
     value: function updateForecast(forecast) {
-      for (var i = 0; i < 3; i++) {
+      for (var i = 0; i < 7; i++) {
         var day = document.querySelector("#forecast-".concat(i + 1, " .day"));
         var condition = document.querySelector("#forecast-".concat(i + 1, " img"));
         var dayTemp = document.querySelector("#forecast-".concat(i + 1, " .day-temp"));
@@ -297,7 +297,7 @@ var APIHandler = /*#__PURE__*/function () {
   }, {
     key: "fetchForecast",
     value: function fetchForecast(location) {
-      return this.fetchData("/forecast.json?key=".concat(this.apiKey, "&q=").concat(encodeURIComponent(location), "&days=3"));
+      return this.fetchData("/forecast.json?key=".concat(this.apiKey, "&q=").concat(encodeURIComponent(location), "&days=7"));
     }
   }, {
     key: "fetchAlert",
@@ -356,8 +356,6 @@ var EventHandler = /*#__PURE__*/function () {
               alertData = _context2.sent;
               currentWeather = new CurrentWeather(currentWeatherData);
               forecast = new Forecast(forecastData);
-              console.log(forecastData);
-              console.log(currentWeatherData);
               if (alertData.alerts.alert.length === 0) {
                 UIManager.removeAlert();
               } else {
@@ -377,19 +375,19 @@ var EventHandler = /*#__PURE__*/function () {
               UIManager.updateChanceOfRain(forecast.chanceOfRain);
               UIManager.updateForecast(forecast.forecast);
               UIManager.updateHourlyWeather(forecast.hourlyData);
-              _context2.next = 41;
+              _context2.next = 39;
               break;
-            case 36:
-              _context2.prev = 36;
+            case 34:
+              _context2.prev = 34;
               _context2.t0 = _context2["catch"](0);
               alert("Failed to fetch weather data. Please try again.");
               console.log(_context2.t0);
               return _context2.abrupt("return");
-            case 41:
+            case 39:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, this, [[0, 36]]);
+        }, _callee2, this, [[0, 34]]);
       }));
       function fetchAndDisplayWeather(_x2) {
         return _fetchAndDisplayWeather.apply(this, arguments);
@@ -535,3 +533,4 @@ function convertDate(dateStr) {
   var dayOfTheWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   return dayOfTheWeek[date.getDay()];
 }
+//
