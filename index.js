@@ -147,7 +147,7 @@ class UIManager {
     document.querySelector("#rain-chance").textContent = `${chanceOfRain}%`;
   }
   static updateForecast(forecast) {
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 7; i++) {
       const day = document.querySelector(`#forecast-${i + 1} .day`);
       const condition = document.querySelector(`#forecast-${i + 1} img`);
       const dayTemp = document.querySelector(`#forecast-${i + 1} .day-temp`);
@@ -234,7 +234,7 @@ class APIHandler {
     return this.fetchData(`/current.json?key=${this.apiKey}&q=${encodeURIComponent(location)}`);
   }
   fetchForecast(location) {
-    return this.fetchData(`/forecast.json?key=${this.apiKey}&q=${encodeURIComponent(location)}&days=3`);
+    return this.fetchData(`/forecast.json?key=${this.apiKey}&q=${encodeURIComponent(location)}&days=7`);
   }
   fetchAlert(location) {
     return this.fetchData(`/alerts.json?key=${this.apiKey}&q=${encodeURIComponent(location)}`);
@@ -268,8 +268,6 @@ class EventHandler {
       const alertData = await this.apiHandler.fetchAlert(location);
       const currentWeather = new CurrentWeather(currentWeatherData);
       const forecast = new Forecast(forecastData);
-      console.log(forecastData);
-      console.log(currentWeatherData);
       if (alertData.alerts.alert.length === 0) {
         UIManager.removeAlert();
       } else {
